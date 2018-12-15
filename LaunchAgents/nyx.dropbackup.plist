@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key><string>nyx.dropbackup</string>
+    <key>WorkingDirectory</key><string>/Users/viny/Library/Logs/nyx/dropbackup</string>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/Users/viny/.nix-profile/bin:/usr/bin:/bin</string>
+        <key>LANG</key>
+        <string>fr_FR.UTF-8</string>
+    </dict>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Users/viny/.nyx/bin/dropbackup</string>
+        <string>backup</string>
+    </array>
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>20</integer>
+        <key>Minute</key>
+        <integer>0</integer>
+        <key>Weekday</key>
+        <integer>5</integer>
+    </dict>
+    <key>StandardErrorPath</key> <string>stderr.log</string>
+    <key>StandardOutPath</key>   <string>stdout.log</string>
+</dict>
+</plist>

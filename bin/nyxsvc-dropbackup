@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+help_msg() {
+    cat << EOF
+Usage:
+  nyxsvc-dropbackup [command]
+
+Available Commands:
+  install     Install launchd service 
+  start       Force an execution of the task
+EOF
+}
+
+case $1 in
+    install)
+        mkdir -p $HOME/Library/Logs/nyx/dropbackup
+
+        rm -f $HOME/Library/LaunchAgents/nyx.dropbackup.plist
+        ln -s $NYX_HOME/LaunchAgents/nyx.dropbackup.plist $HOME/Library/LaunchAgents
+        
+        launchctl unload $HOME/Library/LaunchAgents/nyx.dropbackup.plist 2>/dev/null
+        launchctl load   $HOME/Library/LaunchAgents/nyx.dropbackup.plist
+        ;;
+    start)
+        launchctl start nyx.dropbackup;;
+    *) help_msg && exit 1;;
+esac

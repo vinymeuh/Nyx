@@ -1,0 +1,91 @@
+#!/usr/bin/env bash
+
+export BORG_REPO=$HOME/Dropbox/Privé/Dropbackup
+export BORG_PASSCOMMAND="security find-generic-password -a $USER -s borg-dropbackup -w"
+
+help_msg() {
+    cat << EOF
+Usage:
+  dropbackup [command]
+
+Available Commands:
+  backup      Create a new backup
+  info        Information about repository
+  keyfile     Export Keyfile ($HOME/Downloads/borg-dropbackup.keyfile)
+  list        List backups
+  passphrase  Show passphrase (must be backed up in 1Password)
+  printenv    Set environment in current shell, use with eval \$(dropbackup printenv)
+EOF
+}
+
+# Create passphrase
+# ~> security add-generic-password -D secret -U -a $USER -s borg-dropbackup -w $(head -c 1024 /dev/urandom | base64)
+#
+# Set BORG_REPO et BORG_PASSCOMMAND and then create the repository
+# ~> borg init --encryption=keyfile
+#
+# WARNING: passphrase AND key file are mandatory to decrypt backups
+#  * the passphrase is stored in the macOS Keychain but must be backed up too (1Password)
+#  * keyfile can be exported by ```disaster keyfile``` to be backed up (1Password)
+
+do_backup() {
+    borg create \
+        --filter AME                \
+        --list                      \
+        --stats                     \
+        --compression lz4           \
+        --show-rc                   \
+        --exclude '**/.DS_Store'    \
+        ::'dropbackup-{now}'        \
+                                    \
+        /Users/viny/Library/mbaDB
+
+    backup_rc=$?
+
+    case $backup_rc in
+        0) 
+            /usr/bin/osascript -e 'display notification "Last backup OK" with title "Dropbackup"'
+            ;;
+        *) 
+            /usr/bin/osascript -e 'display notification "Last backup KO" with title "Dropbackup"'
+            exit $backup_rc
+            ;;
+    esac
+
+    borg prune                  \
+        --list                  \
+        --stats                 \
+        --prefix 'dropbackup-'  \
+        --show-rc               \
+        --keep-weekly   4       \
+        --keep-monthly  2
+
+    prune_rc=$?
+
+    case $prune_rc in
+        0) 
+            /usr/bin/osascript -e 'display notification "Last prune OK" with title "Dropbackup"'
+            ;;
+        *) 
+            /usr/bin/osascript -e 'display notification "Last prune KO" with title "Dropbackup"'
+            exit $prune_rc
+            ;;
+    esac    
+
+}
+
+## Main ##
+case $1 in
+    backup) do_backup;;
+    info) borg info;;
+    keyfile) borg key export $BORG_REPO $HOME/Downloads/borg-dropbackup.keyfile;;
+    list) borg list;;
+    passphrase) eval $BORG_PASSCOMMAND;;
+    printenv)
+        cat << EOF
+export BORG_REPO=$BORG_REPO
+export BORG_PASSCOMMAND="$BORG_PASSCOMMAND"
+EOF
+    ;;
+    *) help_msg && exit 1;;
+esac

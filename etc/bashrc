@@ -41,8 +41,12 @@ export LC_MESSAGES=en_US.UTF-8
 #. for macos, see man path-helper  
 if [ -x /usr/libexec/path_helper ]; then eval $(/usr/libexec/path_helper -s); fi
 
-#. Nixpkgs
+#. Nix & Nixpkgs
 if [ -L "$HOME/.nix-profile" ]; then
+
+    # single user installation
+    source $HOME/.nix-profile/etc/profile.d/nix.sh
+    [[ -z "$NIX_USER_PROFILE_DIR" ]] && export NIX_USER_PROFILE_DIR="/nix/var/nix/profiles/per-user/$USER"
 
     pathprepend "$HOME/.nix-profile/bin"
     pathprepend "$HOME/.nix-profile/share/man" MANPATH
@@ -101,9 +105,9 @@ export GIT_EDITOR=vi
 #. banner
 if [ -f "$NYX_HOME"/etc/banner.txt ]; then
     if [[ $0 == "-bash" ]]; then
-        (echo "cat <<EOF" ; cat $NYX_HOME/etc/banner.txt ; echo EOF ) | $SHELL
+        (echo "cat <<EOF" ; cat $NYX_HOME/etc/banner.txt ; echo EOF ) | $SHELL 2>/dev/null
     else
-        (echo "cat <<EOF" ; cat $NYX_HOME/etc/banner.txt ; echo EOF ) | $0
+        (echo "cat <<EOF" ; cat $NYX_HOME/etc/banner.txt ; echo EOF ) | $0 2>/dev/null
     fi
 fi
 
@@ -127,14 +131,26 @@ unset pathremove pathprepend pathappend
 alias cp='cp -i'
 alias df='df -PH'
 alias h='history'
-alias ldd='otool -L'
-alias ll='ls -lsa'
-alias ls='ls -G'
 alias man='LANG=C man'
 alias mv='mv -i'
 alias rehash='hash -r'   # see bash/checkhash
 alias rm='rm -i'
 
+type exa 2>/dev/null 1>&2
+if [ $? -eq 0 ]; then
+    alias ls='exa'
+    alias ll='exa --long --header --git -a'
+else
+    alias ls='ls -G'
+    alias ll='ls -lsa'
+fi
+
+case $(uname) in
+    Darwin)
+        alias ldd='otool -L'
+        alias sss='open /System/Library/CoreServices/ScreenSaverEngine.app/Contents/MacOS/ScreenSaverEngine'
+        ;;
+esac
+
 alias piconsole='screen /dev/cu.usbserial 115200'
 alias radiogaga='ncmpcpp -h radiogaga.local'
-alias sss='open /System/Library/CoreServices/ScreenSaverEngine.app/Contents/MacOS/ScreenSaverEngine'

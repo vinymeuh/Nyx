@@ -9,10 +9,11 @@ Commands for nyx:
   setup     Install nyx dotfiles & nix packages
 
 Commands for nix packages:
-  install   Install nix packages
+  clean     Clean up nix store
+  install   Install nyx-all packages
   list      List nix packages
   status    Show some metrics about nix installation
-  update    Update nix packages
+  update    Update nix channels 
 
 EOF
 }
@@ -57,19 +58,26 @@ nyx_setup() {
     echo "=> create links for nixpkgs setup"
     link_dotfile "$HOME/.nixpkgs" "$NYX_HOME/nixpkgs"
 
+    echo "=> install nyx-all packages"
     nyx_nix_install
+}
+
+## Command - clean ##
+nyx_nix_clean() {
+    echo "nix-collect-garbage -d"
+    nix-collect-garbage -d
 }
 
 ## Command - install ##
 nyx_nix_install() {
-    echo "=> install nix packages (nix-env -i nyx)"
-    nix-env -i nyx
+    echo "nix-env -i nyx-all"
+    nix-env -i nyx-all
 }
 
 ## Command - list ##
 nyx_nix_list() {
     declare -A PACKAGES
-    root_path=$(nix-env -q --out-path | awk '{print $2;exit}')
+    root_path=$(nix-env -q --out-path nyx-all | awk '{print $2;exit}')
     for pkg_path in $(nix-store -q --references $root_path)
     do
         pkg_name=$(IFS='-'; read -r pkg_hash pkg_name <<< $pkg_path; IFS=' ';echo $pkg_name)
@@ -87,11 +95,11 @@ nyx_nix_list() {
 ## Command - status ##
 nyx_nix_status() {
     nix_version=$(nix-env --version | awk '{print $3'})
-    nix_nixpkgs=$(nix-instantiate --eval -E '(import <nixpkgs> {}).lib.nixpkgsVersion' | tr -d '"')
+    nix_nixpkgs=$(nix-instantiate --eval -E '(import <nixpkgs> {}).lib.version' 2>/dev/null | tr -d '"')
     nix_store_size=$(du -hs /nix/store | awk '{print $1}')
     nix_derivations=$(ls -1 /nix/store | wc -l | awk '{print $1}')
     nix_gen_default=$(nix-env --list-generations | wc -l | tr -d ' ')
-    nix_gen_webserver=$(nix-env -p $NIX_USER_PROFILE_DIR/webserver --list-generations | wc -l | tr -d ' ')
+    nix_gen_webserver=$(nix-env -p $NIX_USER_PROFILE_DIR/webserver --list-generations 2>/dev/null | wc -l | tr -d ' ')
     cat <<EOF
 Nix version               : $nix_version
 Nixpkgs version (system)  : $nix_nixpkgs
@@ -104,14 +112,21 @@ EOF
 }
 
 ## Command - update ##
+nyx_nix_update() {
+    echo "nix-channel --update"
+    nix-channel --update
+}
+
+## Command - update ##
 
 ## Main ##
 case $1 in
+    clean) nyx_nix_clean;;
     setup) nyx_setup;;
     install) nyx_nix_install;;
     list) nyx_nix_list;;
     status) nyx_nix_status;;
-    update) ;;
+    update) nyx_nix_update;;
     *) help_msg && exit 1;;
 esac
 

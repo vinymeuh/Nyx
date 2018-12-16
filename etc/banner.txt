@@ -2,9 +2,11 @@
     |  ___________  |        $(hostname)
     | |  O     O  | |
     | |  \_____/  | |        macOS    $(sw_vers -productVersion)
-    | |___________| |        Bash     $BASH_VERSION
-    |_______________|        Nix      $(nix --version) 
-   / *************** \\       Nixpkgs  $(nix-instantiate --eval -E '(import <nixpkgs> {}).lib.nixpkgsVersion' | tr -d '"')
-  / ***************** \\
- -----------------------     All commands starts with nyx*
+    | |___________| |        Shell    $0
+    |_______________|        Bash     $BASH_VERSION
+   / *************** \\       Nix      $(nix --version)
+  / ***************** \\      Nixpkgs  $(nix-instantiate --eval -E '(import <nixpkgs> {}).lib.nixpkgsVersion' | tr -d '"')
+ -----------------------     
+ 
+ All commands starts with nyx*
 

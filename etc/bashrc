@@ -100,7 +100,11 @@ export GIT_EDITOR=vi
 
 #. banner
 if [ -f "$NYX_HOME"/etc/banner.txt ]; then
-    (echo "cat <<EOF" ; cat $NYX_HOME/etc/banner.txt ; echo EOF ) | sh
+    if [[ $0 == "-bash" ]]; then
+        (echo "cat <<EOF" ; cat $NYX_HOME/etc/banner.txt ; echo EOF ) | $SHELL
+    else
+        (echo "cat <<EOF" ; cat $NYX_HOME/etc/banner.txt ; echo EOF ) | $0
+    fi
 fi
 
 #. set bash prompt

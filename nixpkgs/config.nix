@@ -11,9 +11,11 @@
                 nyx-bash4
                 nyx-compression
                 nyx-devtools
+                nyx-devlibs
                 nyx-graphics
                 nyx-network-tools
                 nyx-nix-tools
+                nyx-python27
                 nyx-python36
                 nyx-utilities
                 nyx-webdev
@@ -63,6 +65,13 @@
             ];
         };
 
+        nyx-devlibs = buildEnv {
+            name = "nyx-devlibs";
+            paths = [ 
+                openssl.dev
+            ];
+        };
+
         nyx-graphics = buildEnv {
             name = "nyx-graphics";
             paths = [ 
@@ -87,11 +96,13 @@
         nyx-nix-tools = buildEnv {
             name = "nyx-nix-tools";
             paths = [ 
-                nix-info 
+                nix-info
             ];
         };
         
-        nyx-python36 = python36.withPackages (ps: with ps; [ pip ]);
+        nyx-python27 = python27.withPackages (ps: with ps; [ ]);
+
+        nyx-python36 = python36.withPackages (ps: with ps; [ ]);
 
         nyx-utilities = buildEnv {
             name = "nyx-utilities";

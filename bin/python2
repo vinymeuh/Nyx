@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+root_path=$(nix-env -q --out-path nyx-all | awk '{print $2;exit}')
+python_home=$(nix-store -q --references $root_path | grep python-2.7)
+python_bin=$(nix-store -q --references $python_home | grep python-2.7 | grep -v env)
+
+export PYTHON_HOME=$python_home
+exec "$python_bin/bin/python2" "$@"

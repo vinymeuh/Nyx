@@ -62,17 +62,23 @@ if [ -L "$HOME/.nix-profile" ]; then
     export CMAKE_LIBRARY_PATH="$HOME/.nix-profile/lib"
 fi
 
-#. Go
-if [ -x /usr/local/go/bin/go ]; then
-    export PATH=$HOME/go/bin:$HOME/Local/Library/Go/Current/bin:$PATH
-fi
-
 #. XDG user dirs
 pathprepend "$HOME/.local/bin"
 
 #. Nyx himself
 pathprepend "$NYX_HOME/bin"
 pathprepend "$NYX_LOCAL/bin"
+
+#. Go
+if [ -x /usr/local/go/bin/go ]; then
+    export PATH=$HOME/go/bin:$HOME/Local/Library/Go/Current/bin:$PATH
+fi
+
+#. Python
+if [ -r "$HOME/.local/bin/virtualenvwrapper_lazy.sh" ]; then
+    source "$HOME/.local/bin/virtualenvwrapper_lazy.sh"
+    export WORKON_HOME=$HOME/.venvs
+fi
 
 #. short-circuit for non-interactive shell
 case "$-" in
@@ -113,13 +119,18 @@ fi
 
 #. set bash prompt
 prompt_command () {
-    if [ $? -eq 0 ]; then local rc="ok"; else local rc="ko"; fi    
     local green='\e[0;36m'
     local red='\e[0;31m'
     local nc='\e[0m'
+
+    if [[ -n $VIRTUAL_ENV ]]; then
+        local venv="($(basename $VIRTUAL_ENV))"
+    fi
+
+    if [ $? -eq 0 ]; then local rc="ok"; else local rc="ko"; fi    
     case $rc in
-        ok) export PS1="${green}\u@\h ~> ${nc}";;
-        ko) export PS1="${red}\u@\h ~> ${nc}";;
+        ok) export PS1="${green}\u@\h $venv~> ${nc}";;
+        ko) export PS1="${red}\u@\h $venv~> ${nc}";;
     esac
 }
 export PROMPT_COMMAND=prompt_command
@@ -140,6 +151,7 @@ type exa 2>/dev/null 1>&2
 if [ $? -eq 0 ]; then
     alias ls='exa'
     alias ll='exa --long --header --git -a'
+    alias tree='exa --tree'
 else
     alias ls='ls -G'
     alias ll='ls -lsa'

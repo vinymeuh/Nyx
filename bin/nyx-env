@@ -12,6 +12,7 @@ Commands for nix packages:
   clean     Clean up nix store
   install   Install nyx-all packages
   list      List nix packages
+  rollback  Switch to previous generatioon of the profile
   status    Show some metrics about nix installation
   update    Update nix channels 
 
@@ -111,13 +112,18 @@ Number of generations
 EOF
 }
 
+## Command - rollback ##
+nyx_nix_rollback() {
+    echo "nix-env --rollback"
+    nix-env --rollback
+}
+
 ## Command - update ##
 nyx_nix_update() {
     echo "nix-channel --update"
     nix-channel --update
 }
 
-## Command - update ##
 
 ## Main ##
 case $1 in
@@ -125,6 +131,7 @@ case $1 in
     setup) nyx_setup;;
     install) nyx_nix_install;;
     list) nyx_nix_list;;
+    rollback) nyx_nix_rollback;;
     status) nyx_nix_status;;
     update) nyx_nix_update;;
     *) help_msg && exit 1;;

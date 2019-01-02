@@ -164,5 +164,9 @@ case $(uname) in
         ;;
 esac
 
+alias cf='LANG=C cf'
+
+[ -f $NYX_HOME/etc/setenv/espidf ] && alias setenv-espidf='eval $($NYX_HOME/etc/setenv/espidf);workon esp-idf'
+
 alias piconsole='screen /dev/cu.usbserial 115200'
 alias radiogaga='ncmpcpp -h radiogaga.local'

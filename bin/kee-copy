@@ -1,0 +1,77 @@
+#!/usr/bin/env bash
+#
+# Setup a macOS LaunchAgent to copy keepass file on modification
+# 
+
+AGENT_NAME="kee-copy"
+PLIST_FILE="$HOME/Library/LaunchAgents/${AGENT_NAME}.plist"
+
+KEEPASS_DIRECTORY="${HOME}/Library/KeePass"
+KEEPASS_FILE="mespasswords.kdbx"
+BACKUP_DIRECTORY="${HOME}/Dropbox/Privé/KeePass"
+
+MY_FULLNAME="$(cd $(dirname $0); pwd)/$(basename $0)"
+
+help_msg() {
+    cat << EOF
+Usage:
+  $(basename $0) [command]
+
+Available Commands:
+  install     Install launchd service
+  uninstall   Uninstall launcd service
+  start       Force an execution of the task
+EOF
+}
+
+createPlistFile() {
+cat > ${PLIST_FILE} <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key><string>${AGENT_NAME}</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>${MY_FULLNAME}</string>
+        <string>start</string>
+    </array>
+    <key>StandardOutPath</key>   <string>${KEEPASS_DIRECTORY}/${AGENT_NAME}.log</string>
+    <key>StandardErrorPath</key> <string>${KEEPASS_DIRECTORY}/${AGENT_NAME}.log</string>
+    <key>WatchPaths</key>
+    <array>
+        <string>${KEEPASS_DIRECTORY}/${KEEPASS_FILE}</string>
+    </array>
+    <key>ThrottleInterval</key><integer>60</integer>
+</dict>
+</plist>
+EOF
+}
+
+## Main ##
+case $1 in
+    install)
+        if [ ! -f ${KEEPASS_DIRECTORY}/${KEEPASS_FILE} ]; then
+            echo "File '${KEEPASS_DIRECTORY}/${KEEPASS_FILE}' does not exists"
+            exit 1
+        fi
+        createPlistFile
+        launchctl load ${PLIST_FILE}
+        ;;
+    uninstall)
+        launchctl unload ${PLIST_FILE}
+        rm ${PLIST_FILE}
+        ;;
+    start)
+        if [ ! -f ${KEEPASS_DIRECTORY}/${KEEPASS_FILE} ]; then
+            echo "File '${KEEPASS_DIRECTORY}/${KEEPASS_FILE}' does not exists"
+            exit 1
+        fi
+        # local copy
+        cp ${KEEPASS_DIRECTORY}/${KEEPASS_FILE} ${KEEPASS_DIRECTORY}/${KEEPASS_FILE}.$(date +%Y%m%d_%H%M%S)
+        # dropbox
+        cp -f ${KEEPASS_DIRECTORY}/${KEEPASS_FILE} ${BACKUP_DIRECTORY}
+        exit $?
+        ;;
+    *) help_msg && exit 1;;
+esac

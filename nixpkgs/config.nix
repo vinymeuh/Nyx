@@ -13,6 +13,7 @@
                 nyx-devtools
                 nyx-devlibs
                 nyx-graphics
+                nyx-mosquitto
                 nyx-network-tools
                 nyx-nix-tools
                 nyx-python27
@@ -121,6 +122,11 @@
                 asciidoctor 
                 hugo 
             ];
+        };
+
+        nyx-mosquitto = pkgs.buildEnv {
+            name = "nyx-mosquitto";
+            paths = [ mosquitto ];
         };
 
         ## For others profiles ##

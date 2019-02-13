@@ -80,6 +80,12 @@ if [ -r "$HOME/.local/bin/virtualenvwrapper_lazy.sh" ]; then
     export WORKON_HOME=$HOME/.venvs
 fi
 
+#. Perl with App::perlbrew
+if [ -d /usr/local/perlbrew ]; then
+    export PERLBREW_ROOT=/usr/local/perlbrew
+    source ${PERLBREW_ROOT}/etc/bashrc
+fi
+
 #. short-circuit for non-interactive shell
 case "$-" in
     *i*);;

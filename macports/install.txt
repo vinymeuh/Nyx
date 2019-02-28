@@ -1,0 +1,35 @@
+bash
+bash-completion
+# audio
+ncmpcpp
+# backup
+borgbackup      # !! osxfuse -> nettoyage 
+# compression
+xz
+unrar
+# devlibs
+# devtools
+cmake
+git
+pkgconfig
+# graphics
+exiftool 
+exiv2 
+# mosquitto
+mosquitto
+# network-tools
+httpie
+nmap -subversion
+rsync
+ssh-copy-id
+wget
+# python
+## sudo port select --set python2 python27
+python27
+## sudo port select --set python3 python37
+## sudo port select --set python python37
+python37
+# utilities
+most
+tree
+# webdev

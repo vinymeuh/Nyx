@@ -41,29 +41,15 @@ export LC_MESSAGES=en_US.UTF-8
 #. for macos, see man path-helper  
 if [ -x /usr/libexec/path_helper ]; then eval $(/usr/libexec/path_helper -s); fi
 
-#. Nix & Nixpkgs
-if [ -L "$HOME/.nix-profile" ]; then
+#. MacPorts
+if [ -d /opt/local ]; then
+    pathprepend "/opt/local/bin:/opt/local/sbin"
+    pathprepend "/opt/local/share/man" MANPATH
 
-    # single user installation
-    source $HOME/.nix-profile/etc/profile.d/nix.sh
-    [[ -z "$NIX_USER_PROFILE_DIR" ]] && export NIX_USER_PROFILE_DIR="/nix/var/nix/profiles/per-user/$USER"
-
-    pathprepend "$HOME/.nix-profile/bin"
-    pathprepend "$HOME/.nix-profile/share/man" MANPATH
-
-    if [ -f "$HOME/.nix-profile/etc/profile.d/bash_completion.sh" ]; then
-        source "$HOME/.nix-profile/etc/profile.d/bash_completion.sh";
+    if [ -f /opt/local/etc/profile.d/bash_completion.sh ]; then
+        source /opt/local/etc/profile.d/bash_completion.sh
     fi
-
-    # check with pkg-config --list-all
-    export PKG_CONFIG_PATH="$HOME/.nix-profile/lib/pkgconfig"
-
-    export CMAKE_INCLUDE_PATH="$HOME/.nix-profile/include"
-    export CMAKE_LIBRARY_PATH="$HOME/.nix-profile/lib"
 fi
-
-#. XDG user dirs
-pathprepend "$HOME/.local/bin"
 
 #. Nyx himself
 pathprepend "$NYX_HOME/bin"
@@ -75,10 +61,7 @@ if [ -x /usr/local/go/bin/go ]; then
 fi
 
 #. Python
-if [ -r "$HOME/.local/bin/virtualenvwrapper_lazy.sh" ]; then
-    source "$HOME/.local/bin/virtualenvwrapper_lazy.sh"
-    export WORKON_HOME=$HOME/.venvs
-fi
+pathprepend "$(python -m site --user-base)/bin"
 
 #. short-circuit for non-interactive shell
 case "$-" in

@@ -1,0 +1,16 @@
+- name: Install MacPorts packages
+  macports:
+    name: "{{ item.name | default(item) }}"
+    variant: "{{ item.variant | default(omit) }}"
+  loop: "{{ macports_installed_packages }}"
+  become: yes
+
+- name: Set the Python aliases (MacPorts)
+  command: port select --set "{{ item.alias }}" "{{ item.version }}"
+  loop: "{{ macports_python_select }}"
+  become: yes
+
+- name: Git global configuration
+  command: "{{ item }}"
+  loop: "{{ git_global_configuration }}"
+  tags: ["git"]

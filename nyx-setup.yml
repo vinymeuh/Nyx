@@ -1,0 +1,8 @@
+---
+- hosts: local
+
+  vars_files:
+    - nyx-config-ringo.yml
+
+  roles:
+    - role: basis

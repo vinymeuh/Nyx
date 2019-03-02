@@ -1,0 +1,43 @@
+---
+macports_installed_packages:
+  - bash
+  - bash-completion
+  # audio
+  - ncmpcpp
+  # backup
+  - borgbackup 
+  # compression
+  - xz
+  - unrar
+  # devtools
+  - cmake
+  - git
+  - pkgconfig
+  # graphics
+  - exiftool 
+  - exiv2 
+  # mosquitto
+  - mosquitto
+  # network-tools
+  - httpie
+  - { name: "nmap", variants: "-subversion" }
+  - rsync
+  - ssh-copy-id
+  - wget
+  # python
+  - python27
+  - python37
+  # utilities
+  - most
+  - osxfuse
+  - tree
+
+macports_python_select:
+  - { alias: "python2", version: "python27" }
+  - { alias: "python3", version: "python37" }
+  - { alias: "python" , version: "python37" }
+
+git_global_configuration:
+  - "git config --global user.name vinymeuh"
+  - "git config --global user.email vinymeuh@gmail.com"
+  - "git config --global credential.helper osxkeychain"

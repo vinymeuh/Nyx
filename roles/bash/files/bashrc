@@ -1,11 +1,6 @@
 # bashrc
 #  by default, only used by interactive non-login shell
 
-#. bootstrap nyx
-export NYX_HOME="$HOME/Library/nyx"
-export NYX_LOCAL="$HOME/Library/nyx-local"
-export NYX_LOGS="$HOME/Library/Logs/nyx"
-
 #. functions to help us manage paths (shamelessly borrowed from Linux From Scratch)
 #. second argument is the name of the path variable to be modified (default: PATH)
 pathremove () {
@@ -51,10 +46,6 @@ if [ -d /opt/local ]; then
     fi
 fi
 
-#. Nyx himself
-pathprepend "$NYX_HOME/bin"
-pathprepend "$NYX_LOCAL/bin"
-
 #. Go
 if [ -x /usr/local/go/bin/go ]; then
     export PATH=$HOME/go/bin:$HOME/Local/Library/Go/Current/bin:$PATH
@@ -92,11 +83,11 @@ if [ $? -eq 0 ]; then export MANPAGER=most; fi
 export GIT_EDITOR=vi
 
 #. banner
-if [ -f "$NYX_HOME"/etc/banner.txt ]; then
+if [ -f "$HOME/.banner" ]; then
     if [[ $0 == "-bash" ]]; then
-        (echo "cat <<EOF" ; cat $NYX_HOME/etc/banner.txt ; echo EOF ) | $SHELL 2>/dev/null
+        (echo "cat <<EOF" ; cat "$HOME/.banner" ; echo EOF ) | $SHELL 2>/dev/null
     else
-        (echo "cat <<EOF" ; cat $NYX_HOME/etc/banner.txt ; echo EOF ) | $0 2>/dev/null
+        (echo "cat <<EOF" ; cat "$HOME/.banner" ; echo EOF ) | $0 2>/dev/null
     fi
 fi
 
@@ -118,27 +109,27 @@ prompt_command () {
 }
 export PROMPT_COMMAND=prompt_command
 
+#. set up ESF-IDF environment on demand
+setenv-espidf() {
+    export PATH=/usr/local/esp32/xtensa-esp32-elf/bin:$PATH
+    export IDF_PATH=/usr/local/esp32/esp-idf
+    export ESPPORT=/dev/cu.SLAB_USBtoUART
+}
+
 #. cleanup
 unset pathremove pathprepend pathappend
 
 #. aliases
+alias cf='LANG=C cf'    # cloudfoundry
 alias cp='cp -i'
 alias df='df -PH'
 alias h='history'
+alias ls='ls -G'
+alias ll='ls -lsa'
 alias man='LANG=C man'
 alias mv='mv -i'
-alias rehash='hash -r'   # see bash/checkhash
+alias rehash='hash -r'  # see bash/checkhash
 alias rm='rm -i'
-
-type exa 2>/dev/null 1>&2
-if [ $? -eq 0 ]; then
-    alias ls='exa'
-    alias ll='exa --long --header --git -a'
-    alias tree='exa --tree'
-else
-    alias ls='ls -G'
-    alias ll='ls -lsa'
-fi
 
 case $(uname) in
     Darwin)
@@ -146,10 +137,6 @@ case $(uname) in
         alias sss='open /System/Library/CoreServices/ScreenSaverEngine.app/Contents/MacOS/ScreenSaverEngine'
         ;;
 esac
-
-alias cf='LANG=C cf'
-
-[ -f $NYX_HOME/etc/setenv/espidf ] && alias setenv-espidf='eval $($NYX_HOME/etc/setenv/espidf);workon esp-idf'
 
 alias piconsole='screen /dev/cu.usbserial 115200'
 alias radiogaga='ncmpcpp -h radiogaga.local'

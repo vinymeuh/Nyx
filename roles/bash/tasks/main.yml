@@ -1,0 +1,15 @@
+- name: create empty .bash_sessions_disable
+  copy:
+    content: ""
+    dest: "~/.bash_sessions_disable"
+    mode: 0400
+
+- name: copy bash configuration files
+  copy:
+    src: "./roles/bash/files/{{ item }}"
+    dest: "~/.{{ item }}"
+    mode: 0400
+  loop:
+    - bash_profile
+    - bashrc
+    - banner

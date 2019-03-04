@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
     <key>Label</key><string>nyx.dropbackup</string>
-    <key>WorkingDirectory</key><string>/Users/viny/Library/Logs/nyx/dropbackup</string>
+    <key>WorkingDirectory</key><string>{{ ansible_env.HOME }}/Library/Logs/dropbackup</string>
     <key>EnvironmentVariables</key>
     <dict>
         <key>PATH</key>
-        <string>/Users/viny/.nix-profile/bin:/usr/bin:/bin</string>
+        <string>/opt/local/bin:/usr/bin:/bin</string>
         <key>LANG</key>
         <string>fr_FR.UTF-8</string>
     </dict>
     <key>ProgramArguments</key>
     <array>
-        <string>/Users/viny/.nyx/bin/dropbackup</string>
+        <string>{{ ansible_env.HOME }}/bin/dropbackup</string>
         <string>backup</string>
     </array>
     <key>StartCalendarInterval</key>

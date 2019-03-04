@@ -7,4 +7,5 @@
     - { role: macports, tags: ['macports'], become: yes }
     - { role: bash, tags: ['bash'] }
     - { role: git, tags: ['git'] }
+    - { role: backup, tags: ['backup'] }
     - { role: webserver, tags: ['webserver'] }

@@ -4,8 +4,6 @@ macports_installed_packages:
   - bash-completion
   # audio
   - ncmpcpp
-  # backup
-  - borgbackup 
   # compression
   - xz
   - unrar

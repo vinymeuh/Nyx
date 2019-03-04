@@ -1,7 +1,7 @@
 ## nginx.conf ##
 
-pid         /Users/viny/Library/Caches/nyx/webserver/nginx/nginx.pid;
-error_log   /Users/viny/Library/Logs/nyx/webserver/nginx/error.log;
+pid         {{ ansible_env.HOME }}/Library/nginx/nginx.pid;
+error_log   {{ ansible_env.HOME }}/Library/Logs/nginx/error.log;
 
 worker_processes  1;
 worker_rlimit_nofile 2048;
@@ -20,10 +20,10 @@ http {
     tcp_nodelay             on;
     tcp_nopush              on;
     ## MIME ##
-    include         /nix/var/nix/profiles/per-user/viny/webserver/conf/mime.types;
+    include         /opt/local/etc/nginx/mime.types;
     default_type    application/octet-stream;
     ## ACCESS LOG ##
-    access_log      /Users/viny/Library/Logs/nyx/webserver/nginx/access.log;
+    access_log      {{ ansible_env.HOME }}/Library/Logs/nginx/access.log;
     ## GZIP ##
     gzip            on;
     gzip_comp_level 5;
@@ -41,11 +41,11 @@ http {
         text/css
         text/plain;
     ## Temporary directories ##
-    client_body_temp_path   /Users/viny/Library/Caches/nyx/webserver/nginx/client_body_temp;
-    fastcgi_temp_path       /Users/viny/Library/Caches/nyx/webserver/nginx/fastcgi_temp;
-    proxy_temp_path         /Users/viny/Library/Caches/nyx/webserver/nginx/proxy_temp;
-    scgi_temp_path          /Users/viny/Library/Caches/nyx/webserver/nginx/scgi_temp;
-    uwsgi_temp_path         /Users/viny/Library/Caches/nyx/webserver/nginx/uwsgi_temp;
+    client_body_temp_path   {{ ansible_env.HOME }}/Library/Caches/nginx/client_body_temp;
+    fastcgi_temp_path       {{ ansible_env.HOME }}/Library/Caches/nginx/fastcgi_temp;
+    proxy_temp_path         {{ ansible_env.HOME }}/Library/Caches/nginx/proxy_temp;
+    scgi_temp_path          {{ ansible_env.HOME }}/Library/Caches/nginx/scgi_temp;
+    uwsgi_temp_path         {{ ansible_env.HOME }}/Library/Caches/nginx/uwsgi_temp;
     ## SERVER ##
     server {
         server_name localhost;
@@ -53,7 +53,7 @@ http {
         listen localhost:8080;
         listen [::1]:8080;
 
-        root    /Users/viny/Sites;
+        root    {{ ansible_env.HOME }}/Sites;
 
         location / {
         }

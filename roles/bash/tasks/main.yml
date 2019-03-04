@@ -6,10 +6,16 @@
 
 - name: copy bash configuration files
   copy:
-    src: "./roles/bash/files/{{ item }}"
+    src: "{{ item }}"
     dest: "~/.{{ item }}"
     mode: 0400
   loop:
     - bash_profile
     - bashrc
     - banner
+
+- name: create ~/bin
+  file:
+    path: "~/bin"
+    state: directory
+    mode: 0700

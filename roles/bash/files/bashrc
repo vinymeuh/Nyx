@@ -54,6 +54,9 @@ fi
 #. Python
 pathprepend "$(python -m site --user-base)/bin"
 
+#. User bin directory
+pathprepend "$HOME/bin"
+
 #. short-circuit for non-interactive shell
 case "$-" in
     *i*);;

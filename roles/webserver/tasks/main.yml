@@ -1,0 +1,35 @@
+- name: install nginx
+  macports:
+    name: "nginx"
+    variant: "-flv -mp4 +status"
+  become: yes
+
+- name: mark nginx package as requested
+  command: port setrequested nginx
+  become: yes
+
+- name: create directories
+  file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - "~/Library/nginx"
+    - "~/Library/Caches/nginx"
+    - "~/Library/Logs/nginx"
+
+- name: create ~/Library/nginx/nginx.conf
+  template:
+    src: "nginx.conf.j2"
+    dest: "~/Library/nginx/nginx.conf"
+
+- name: create launchd pfile
+  template:
+    src: "nyx.webserver.plist.j2"
+    dest: "~/Library/LaunchAgents/nyx.webserver.plist"
+
+- name: start nginx launchd service
+  command: "{{ item }}"
+  loop:
+    - launchctl unload ~/Library/LaunchAgents/nyx.webserver.plist
+    - launchctl load   ~/Library/LaunchAgents/nyx.webserver.plist
+    - launchctl start nyx.webserver

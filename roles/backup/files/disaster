@@ -1,0 +1,89 @@
+#!/usr/bin/env bash
+
+
+if [ -d "/Volumes/Disaster/Backup-A" ]; then
+    export BORG_REPO=/Volumes/Disaster/Backup-A
+elif [ -d "/Volumes/Disaster/Backup-B" ]; then
+    export BORG_REPO=/Volumes/Disaster/Backup-B
+else
+    echo "ABORT -- Backup disk not found (Backup-A or Backup-B) --" 1>&2
+    exit 1
+fi
+
+
+export BORG_PASSCOMMAND="security find-generic-password -a $USER -s borg-disaster -w"
+
+help_msg() {
+    cat << EOF
+Usage:
+  disaster [command]
+
+Available Commands:
+  backup      Create a new backup
+  info        Information about repository
+  keyfile     Export Keyfile ($HOME/Downloads/borg-disaster.keyfile)
+  list        List backups
+  passphrase  Show passphrase (must be backed up in 1Password)
+  printenv    Set environment in current shell, use with eval \$(disaster printenv)
+EOF
+}
+
+# Create passphrase
+# ~> security add-generic-password -D secret -U -a $USER -s borg-disaster -w $(head -c 1024 /dev/urandom | base64)
+#
+# Set BORG_REPO et BORG_PASSCOMMAND and then create the repository
+# ~> borg init --encryption=keyfile
+#
+# WARNING: passphrase AND key file are mandatory to decrypt backups
+#  * the passphrase is stored in the macOS Keychain but must be backed up too (1Password)
+#  * keyfile can be exported by ```disaster keyfile``` to be backed up (1Password)
+
+do_backup() {
+    borg create \
+        --filter AME                \
+        --list                      \
+        --stats                     \
+        --compression lz4           \
+        --show-rc                   \
+        --exclude '**/.DS_Store'    \
+        --exclude /Users/viny/Images/Import \
+        --exclude /Users/viny/Images/Joomeo \
+        ::'disaster-{now}'          \
+                                    \
+        /Users/viny/Documents /Users/viny/Pictures \
+        /Volumes/HDD/Musique
+
+    if [ $? -ne 0 ]; then
+        echo "ABORT -- something is wrong with the backup --" 1>&2
+        exit 1
+    fi
+
+    borg prune                  \
+        --list                  \
+        --stats                 \
+        --prefix 'disaster-'    \
+        --show-rc               \
+        --keep-weekly   4       \
+        --keep-monthly  2
+
+    if [ $? -ne 0 ]; then
+        echo "ABORT -- something is wrong with the backup --" 1>&2
+        exit 1
+    fi
+}
+
+## Main ##
+case $1 in
+    backup) do_backup;;
+    info) borg info;;
+    keyfile) borg key export $BORG_REPO $HOME/Downloads/borg-dropbackup.keyfile;;
+    list) borg list;;
+    passphrase) eval $BORG_PASSCOMMAND;;
+    printenv)
+        cat << EOF
+export BORG_REPO=$BORG_REPO
+export BORG_PASSCOMMAND="$BORG_PASSCOMMAND"
+EOF
+    ;;
+    *) help_msg && exit 1;;
+esac

@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+
+help_msg() {
+    cat << EOF
+Usage: nyx [command]
+
+MacPorts maintenance commands:
+  clean     Reclaim disk space in MacPorts install
+  status    Show some metrics about MacPorts installation
+  update    Update MacPorts & ports tree(s)
+
+List packages commands:
+  active    List active packages
+  inactive  List inactive packages
+  installed List ALL installed packages (active & inactive)
+  leaves    List unrequested packages without dependents
+  outdated  List outdated packages
+  requested List explicitly installed packages
+
+EOF
+}
+
+
+## Command - clean ##
+nyx_clean() {
+    # See https://guide.macports.org/chunked/using.common-tasks.html#using.common-tasks.keeplean
+    echo "~> sudo port uninstall rleaves"
+    sudo port uninstall leaves
+    echo "~> sudo port reclaim"
+    sudo port reclaim
+}
+
+## Command - status ##
+nyx_status() {
+    macports_version=$(port -q version)
+    optlocal_size=$(du -hs /opt/local | awk '{print $1}')
+    ansible_version=$($HOME/Library/nyx/venv/bin/ansible --version | awk 'NR==1 {print $2}')
+    outdated=$(port outdated |grep -c \<)
+    cat <<EOF
+MacPorts version          : $macports_version
+Ansible version           : $ansible_version
+/opt/local size           : $optlocal_size
+Outdated Packages         : $outdated
+EOF
+}
+
+## Main ##
+case $1 in
+    clean)  nyx_clean;;
+    status) nyx_status;;
+    active)    echo "~> port installed active"    && port installed active;;
+    inactive)  echo "~> port installed inactive"  && port installed inactive;;
+    installed) echo "~> port installed"           && port installed;;
+    leaves)    echo "~> port installed leaves"    && port installed leaves;;
+    outdated)  echo "~> port outdated"            && port outdated;;
+    requested) echo "~> port installed requested" && port installed requested;;
+    update)    echo "~> sudo port selfupdate"     && sudo port selfupdate;;
+    *) help_msg && exit 1;;
+esac

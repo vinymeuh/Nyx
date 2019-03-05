@@ -1,0 +1,3 @@
+- name: set up global configuration
+  command: "{{ item }}"
+  loop: "{{ git_global_configuration }}"

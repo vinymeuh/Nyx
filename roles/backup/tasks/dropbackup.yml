@@ -1,0 +1,19 @@
+- name: copy dropbackup under ~/bin
+  copy:
+    src: "dropbackup"
+    dest: "~/bin"
+    mode: 0500
+
+- name: create directories
+  file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - "~/Library/Logs/dropbackup"
+
+- name: create launchd pfile
+  template:
+    src: "nyx.dropbackup.plist.j2"
+    dest: "~/Library/LaunchAgents/nyx.dropbackup.plist"
+  notify: load dropbackup launchd service
+

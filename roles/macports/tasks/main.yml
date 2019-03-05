@@ -1,0 +1,13 @@
+- name: install MacPorts packages
+  macports:
+    name: "{{ item.name | default(item) }}"
+    variant: "{{ item.variant | default(omit) }}"
+  loop: "{{ macports_installed_packages }}"
+
+- name: mark installed packages as requested
+  command: port setrequested "{{ item.name | default(item) }}"
+  loop: "{{ macports_installed_packages }}"
+
+- name: set the Python aliases
+  command: port select --set "{{ item.alias }}" "{{ item.version }}"
+  loop: "{{ macports_python_select }}"

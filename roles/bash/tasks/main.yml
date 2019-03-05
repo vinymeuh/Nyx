@@ -19,3 +19,5 @@
     path: "~/bin"
     state: directory
     mode: 0700
+
+- import_tasks: misc.yml

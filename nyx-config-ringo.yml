@@ -39,3 +39,7 @@ git_global_configuration:
   - "git config --global user.name vinymeuh"
   - "git config --global user.email vinymeuh@gmail.com"
   - "git config --global credential.helper osxkeychain"
+
+miscellaneous_scripts:
+  - cpan-info
+  - nyx

@@ -4,6 +4,10 @@
     variant: "-flv -mp4 +status"
   become: yes
 
+- name: mark nginx package as requested
+  command: port setrequested nginx
+  become: yes
+
 - name: create directories
   file:
     path: "{{ item }}"

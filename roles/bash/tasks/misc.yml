@@ -1,0 +1,6 @@
+- name: copy miscellaneous scripts under ~/bin
+  copy:
+    src: "{{ item }}"
+    dest: "~/bin"
+    mode: 0500
+  loop: "{{ miscellaneous_scripts }}"

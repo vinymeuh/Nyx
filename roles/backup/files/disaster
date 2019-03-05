@@ -6,7 +6,7 @@ if [ -d "/Volumes/Disaster/Backup-A" ]; then
 elif [ -d "/Volumes/Disaster/Backup-B" ]; then
     export BORG_REPO=/Volumes/Disaster/Backup-B
 else
-    echo "ABORT -- Backup disk not found (Backup-A o Backup-B) --" 1>&2
+    echo "ABORT -- Backup disk not found (Backup-A or Backup-B) --" 1>&2
     exit 1
 fi
 

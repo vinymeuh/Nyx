@@ -1,0 +1,5 @@
+- name: load dropbackup launchd service
+  command: "{{ item }}"
+  loop:
+    - launchctl unload ~/Library/LaunchAgents/nyx.dropbackup.plist
+    - launchctl load   ~/Library/LaunchAgents/nyx.dropbackup.plist

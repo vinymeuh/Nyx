@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+#
+# Backup KeePass file locally and in Dropbox for mobile devices
+# 
+KEEPASS_DIRECTORY="${HOME}/Library/KeePass"
+KEEPASS_FILE="mespasswords.kdbx"
+BACKUP_DIRECTORY="${HOME}/Dropbox/Privé/KeePass"
+
+MY_FULLNAME="$(cd $(dirname $0); pwd)/$(basename $0)"
+
+help_msg() {
+    cat << EOF
+Usage: $(basename $0) start
+EOF
+}
+
+## Main ##
+case $1 in
+    start)
+        if [ ! -f ${KEEPASS_DIRECTORY}/${KEEPASS_FILE} ]; then
+            echo "File '${KEEPASS_DIRECTORY}/${KEEPASS_FILE}' does not exists"
+            exit 1
+        fi
+        # local copy
+        cp ${KEEPASS_DIRECTORY}/${KEEPASS_FILE} ${KEEPASS_DIRECTORY}/${KEEPASS_FILE}.$(date +%Y%m%d_%H%M%S)
+        if [ $? -ne 0 ]; then
+            /usr/bin/osascript -e 'display notification "Problem with local copy" with title "keecopy"'
+        fi
+        # dropbox
+        cp -f ${KEEPASS_DIRECTORY}/${KEEPASS_FILE} ${BACKUP_DIRECTORY}
+        if [ $? -ne 0 ]; then
+            /usr/bin/osascript -e 'display notification "Problem with Dropbox copy" with title "keecopy"'
+        fi
+        # keep 60 days of copy
+        find ${KEEPASS_DIRECTORY} -ctime +60 -name "${KEEPASS_FILE}.2*" -exec rm {} \;
+        if [ $? -ne 0 ]; then
+            /usr/bin/osascript -e 'display notification "Problem with purge older backups" with title "keecopy"'
+        fi
+        ;;
+    *) help_msg && exit 1;;
+esac

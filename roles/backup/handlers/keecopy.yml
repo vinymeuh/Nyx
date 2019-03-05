@@ -1,0 +1,5 @@
+- name: load keecopy launchd service
+  command: "{{ item }}"
+  loop:
+    - launchctl unload ~/Library/LaunchAgents/nyx.keecopy.plist
+    - launchctl load   ~/Library/LaunchAgents/nyx.keecopy.plist

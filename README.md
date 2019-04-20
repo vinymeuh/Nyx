@@ -23,5 +23,5 @@ Run the full playbook with: ```~> ansible-playbook nyx-setup.yml -K```
 
 It is possible to run a restricted set of roles using following tags:
 
-* macports, webserver (both need the sudo password)
-* bash, git, backup (without password)
+* macports, webserver, iot using ```~> ansible-playbook nyx-setup.yml -K -t <tag>```
+* bash, git, backup using ```~> ansible-playbook nyx-setup.yml -t <tag>```

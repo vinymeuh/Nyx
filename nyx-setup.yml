@@ -9,3 +9,4 @@
     - { role: git, tags: ['git'] }
     - { role: backup, tags: ['backup'] }
     - { role: webserver, tags: ['webserver'] }
+    - { role: iot, tags: ['iot'] }

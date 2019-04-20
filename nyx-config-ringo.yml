@@ -14,8 +14,6 @@ macports_installed_packages:
   # graphics
   - exiftool 
   - exiv2 
-  # mosquitto
-  - mosquitto
   # network-tools
   - httpie
   - { name: "nmap", variants: "-subversion" }

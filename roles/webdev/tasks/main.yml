@@ -1,0 +1,15 @@
+- name: install MacPorts packages
+  macports:
+    name: "{{ item }}"
+  become: yes
+  loop:
+    - nodejs11
+    - npm6
+
+- name: install global NPM packages
+  npm:
+    name: "{{ item }}"
+    global: yes
+  become: yes
+  loop:
+    - "@vue/cli"

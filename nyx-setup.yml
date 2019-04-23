@@ -10,3 +10,4 @@
     - { role: backup, tags: ['backup'] }
     - { role: webserver, tags: ['webserver'] }
     - { role: iot, tags: ['iot'] }
+    - { role: webdev, tags: ['webdev'] }

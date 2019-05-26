@@ -2,8 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>Label</key><string>nyx.dropbackup</string>
-    <key>WorkingDirectory</key><string>{{ ansible_env.HOME }}/Library/Logs/dropbackup</string>
+    <key>Label</key><string>nyx.kumobackup</string>
+    <key>WorkingDirectory</key><string>{{ ansible_env.HOME }}/Library/Logs/kumobackup</string>
     <key>EnvironmentVariables</key>
     <dict>
         <key>PATH</key>
@@ -13,7 +13,7 @@
     </dict>
     <key>ProgramArguments</key>
     <array>
-        <string>{{ ansible_env.HOME }}/bin/dropbackup</string>
+        <string>{{ ansible_env.HOME }}/bin/kumobackup</string>
         <string>backup</string>
     </array>
     <key>StartCalendarInterval</key>

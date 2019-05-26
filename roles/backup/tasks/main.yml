@@ -15,5 +15,5 @@
     dest: "~/bin"
     mode: 0500
 
-- import_tasks: dropbackup.yml
+- import_tasks: kumobackup.yml
 - import_tasks: keecopy.yml

@@ -1,0 +1,5 @@
+- name: load kumobackup launchd service
+  command: "{{ item }}"
+  loop:
+    - launchctl unload ~/Library/LaunchAgents/nyx.kumobackup.plist
+    - launchctl load   ~/Library/LaunchAgents/nyx.kumobackup.plist

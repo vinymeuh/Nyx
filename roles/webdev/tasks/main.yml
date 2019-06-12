@@ -3,6 +3,7 @@
     name: "{{ item }}"
   become: yes
   loop:
+    - hugo
     - nodejs11
     - npm6
 

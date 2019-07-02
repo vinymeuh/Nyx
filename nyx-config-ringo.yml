@@ -27,6 +27,7 @@ macports_installed_packages:
   - most
   - osxfuse
   - tree
+  - wkhtmltopdf
 
 macports_python_select:
   - { alias: "python2", version: "python27" }

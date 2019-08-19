@@ -11,6 +11,8 @@ macports_installed_packages:
   - cmake
   - git
   - pkgconfig
+  # golang dependencies
+  - graphviz
   # graphics
   - exiftool 
   - exiv2 

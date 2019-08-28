@@ -26,6 +26,7 @@ macports_installed_packages:
   - python27
   - python37
   # utilities
+  - gnutar
   - most
   - osxfuse
   - tree

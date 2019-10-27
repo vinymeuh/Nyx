@@ -1,0 +1,101 @@
+#!/usr/bin/env bash
+
+help_msg() {
+    cat << EOF
+Usage:
+  backupphoto target
+
+With target:
+  all          Backup all the PhotoHub
+  fast         Backup only current year
+  <directory>  Backup only this directory 
+EOF
+}
+
+##---------------##
+## Prerequisites ##
+##---------------##
+# PhotoHub source directories
+PHD_LIVE="$HOME/MyPhotoHub"
+PHD_ARCHIVE="/Volumes/HDD/MyPhotoHubArchive"
+PHD=("$PHD_LIVE" "$PHD_ARCHIVE")
+for d in "${PHD[@]}"
+do
+    if [ ! -d "$d" ]; then
+        echo "ERROR: source directory '$d' does not exists" 1>&2
+        exit 1
+    fi
+done
+
+# PhotoHub backup directory
+PHD_BACKUP="/Volumes/IcyBox/MyPhotoHubBackup"
+if [ ! -d "$PHD_BACKUP" ]; then
+    echo "ERROR: backup disk not found ($PHD_BACKUP)" 1>&2
+    exit 1
+fi
+
+# Only these subdirectories under PHD will be sync
+PHD_SUBDIR=("Phototèque" "RAW")
+
+# Rsync
+RSYNC="/opt/local/bin/rsync"
+if [ ! -x "$RSYNC" ]; then
+    echo "ERROR: $RSYNC executable not found" 1>&2
+    exit 1
+fi
+
+##------------------##
+## Check parameters ##
+##------------------##
+if [ $# -eq 0 ]; then
+    echo "ERROR: missing target" 1>&2
+    help_msg
+    exit 1
+fi
+
+if [ $# -gt 1 ]; then
+    echo "ERROR: too many targets" 1>&2
+    help_msg
+    exit 1
+fi
+
+case $1 in
+    all)
+        target=""
+        ;;
+    fast)
+        target=$(date +%Y) 
+        ;;
+    *)
+        target="$1"
+        ;;
+esac
+
+##------##
+## Main ##
+##------##
+for d in "${PHD[@]}"
+do
+    for subd in "${PHD_SUBDIR[@]}"; do
+        SRC="$d/$subd/$target"
+        if [ -d "$SRC" ]; then
+            TGT="$PHD_BACKUP/$(basename $d)/$subd"
+            if [ ! -d "$TGT" ]; then
+                mkdir -p "$TGT"
+                if [ $? -ne 0 ]; then
+                    echo "ERROR: unable to create directory '$TGT'" 1>&2
+                    continue
+                fi
+            fi
+            echo "$SRC -> $TGT"
+            # rsync options: rlptgoD
+            #  -rptgo       = recursive, permissions, times, group, owner
+            #  --progress   = progress bar
+            #  -h           = use human readable format number
+            #  -cheksum     = skip based on checksum, not mod-time & size
+            #  --delete     = delete files from backup dir if no more exist in source
+            #  --stats      = show statistics
+            $RSYNC -rptgo -h --progress -cheksum --delete --stats "$SRC/" "$TGT/"
+        fi
+    done
+done

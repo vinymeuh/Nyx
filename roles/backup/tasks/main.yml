@@ -15,11 +15,6 @@
     dest: "~/bin"
     mode: 0500
 
-- name: copy backupphoto under ~/bin
-  copy:
-    src: "backupphoto"
-    dest: "~/bin"
-    mode: 0500
-
+- import_tasks: backupphoto.yml
 - import_tasks: kumobackup.yml
 - import_tasks: keecopy.yml

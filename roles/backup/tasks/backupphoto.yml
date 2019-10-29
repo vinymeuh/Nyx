@@ -1,0 +1,14 @@
+- name: install rclone
+  macports:
+    name: "rclone"
+  become: yes
+
+- name: mark rclone package as requested
+  command: port setrequested rclone
+  become: yes
+
+- name: copy backupphoto under ~/bin
+  copy:
+    src: "backupphoto"
+    dest: "~/bin"
+    mode: 0500

@@ -1,0 +1,23 @@
+- name: bash's configuration files
+  block:
+    - name: create empty .bash_sessions_disable
+      copy:
+        content: ""
+        dest: "~/.bash_sessions_disable"
+        mode: 0400
+    - name: copy bash's configuration files
+      copy:
+        src: "{{ item }}"
+        dest: "~/.{{ item }}"
+        mode: 0400
+      loop:
+        - bash_profile
+        - bashrc
+        - banner
+
+- name: git global configuration
+  command: "{{ item }}"
+  loop:
+    - "git config --global user.name vinymeuh"
+    - "git config --global user.email vinymeuh@gmail.com"
+    - "git config --global credential.helper osxkeychain"

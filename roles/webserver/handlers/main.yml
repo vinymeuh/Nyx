@@ -1,0 +1,6 @@
+- name: load nginx launchd service
+  command: "{{ item }}"
+  loop:
+    - launchctl unload ~/Library/LaunchAgents/nyx.webserver.plist
+    - launchctl load   ~/Library/LaunchAgents/nyx.webserver.plist
+    - launchctl start nyx.webserver

@@ -1,27 +1,29 @@
 # Nyx
 
-Ansible playbooks and scripts to setup my shell environment.
+Ansible playbook to setup my computer.
 
-Current setup is only tested and used under macOS with [MacPorts](https://www.macports.org/).
+## Prerequisites
 
-## Bootstrap
+### Install Ansible
 
-First manually install [MacPorts](https://www.macports.org/install.php) then:
+Assuming a Python interpreter is already installed:
 
-```shell
-~> cd $HOME/Library
-~> git clone https://github.com/vinymeuh/nyx.git
-~> cd nyx
-~> ./bootstrap.sh
+```
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt  
 ```
 
-## Ansible Playbooks
+### MacPorts
 
-Activate the Python virtualenv created for Ansible: ```~> source $HOME/Library/nyx/venv/bin/activate```
+Manually install [MacPorts](https://www.macports.org/install.php).
 
-Run the full playbook with: ```~> ansible-playbook nyx-setup.yml -K```
+## Playbooks
 
-It is possible to run a restricted set of roles using following tags:
+```
+~> source $HOME/Library/nyx/venv/bin/activate```
+```
 
-* macports, iot, webserver, webdev using ```~> ansible-playbook nyx-setup.yml -K -t <tag>```
-* bash, git, backup using ```~> ansible-playbook nyx-setup.yml -t <tag>```
+Install MacPorts ports requires sudo password: ```~> ansible-playbook ringo.yml -t macports -K```
+
+For all others tasks, simply do a ```ansible-playbook ringo.yml```

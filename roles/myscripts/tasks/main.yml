@@ -1,0 +1,21 @@
+- name: create ~/bin
+  file:
+    path: "~/bin"
+    state: directory
+    mode: 0700
+
+- name: copy my scripts under ~/bin
+  copy:
+    src: "{{ item }}"
+    dest: "~/bin"
+    mode: 0500
+  loop:
+    - backupphoto
+    - cpan-info
+    - disaster
+    - keecopy
+    - kumobackup
+    - nyx
+
+- import_tasks: macos.yml
+  when: ansible_distribution == 'MacOSX'

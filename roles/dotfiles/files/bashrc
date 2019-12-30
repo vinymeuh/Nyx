@@ -57,6 +57,9 @@ pathprepend "$(python -m site --user-base)/bin"
 #. User bin directory
 pathprepend "$HOME/bin"
 
+#. Miscellaneous
+export MINIKUBE_HOME=$HOME/Local/minikube
+
 #. short-circuit for non-interactive shell
 case "$-" in
     *i*);;
@@ -142,4 +145,4 @@ case $(uname) in
 esac
 
 alias piconsole='screen /dev/cu.usbserial 115200'
-alias radiogaga='ncmpcpp -h radiogaga.local'
+alias radiogaga='ncmpcpp -h radiogaga'

@@ -1,4 +1,0 @@
-- name: install mosquitto
-  macports:
-    name: "mosquitto"
-  become: yes

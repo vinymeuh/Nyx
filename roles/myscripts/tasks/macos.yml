@@ -1,0 +1,17 @@
+- name: launchd configuration for keecopy
+  template:
+    src: "nyx.keecopy.plist.j2"
+    dest: "~/Library/LaunchAgents/nyx.keecopy.plist"
+  notify: load keecopy launchd service
+
+- name: kumobackup configuration
+  block:
+    - name: create kumobackup log directory
+      file:
+        path: "~/Library/Logs/kumobackup"
+        state: directory
+    - name: launchd configuration for kumobackup
+      template:
+        src: "nyx.kumobackup.plist.j2"
+        dest: "~/Library/LaunchAgents/nyx.kumobackup.plist"
+      notify: load kumobackup launchd service

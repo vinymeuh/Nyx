@@ -2,11 +2,41 @@
   macports:
     name: "{{ item.name | default(item) }}"
     variant: "{{ item.variant | default(omit) }}"
-  loop: "{{ macports_installed_packages }}"
+  loop: "{{ macports_packages }}"
 
-- name: mark installed packages as requested
+- name: retrieve list of requested packages
+  shell: port echo requested | cut -d' ' -f1
+  register: ports_marked_as_requested
+  changed_when: false
+
+- name: print ports_marked_as_requested
+  debug:
+    var: "{{ ports_marked_as_requested.stdout_lines }}"
+    verbosity: 1
+
+- name: ensure all requested packages are correctly marked
   command: port setrequested "{{ item.name | default(item) }}"
-  loop: "{{ macports_installed_packages }}"
+  when: item.name | default(item) not in ports_marked_as_requested.stdout_lines
+  loop: "{{ macports_packages }}"
+
+- name: populate ports_requested
+  set_fact:
+    ports_requested: "{{ ports_requested|default([]) + [item.name|default(item)] }}"
+  with_items:
+    - "{{ macports_packages }}"
+  changed_when: false
+
+- name: print ports_requested
+  debug:
+    var: ports_requested
+    verbosity: 1
+
+- name: uninstall installed packages no more requested  
+  macports:
+    name: "{{ item }}"
+    state: absent
+  when: item not in ports_requested
+  loop: "{{ ports_marked_as_requested.stdout_lines }}"
 
 - name: set the Python aliases
   command: port select --set "{{ item.alias }}" "{{ item.version }}"

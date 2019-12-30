@@ -1,0 +1,43 @@
+- name: Setting up ringo
+  hosts: ringo
+
+  vars:
+    macports_packages:
+      - bash
+      - bash-completion
+      # warning: borgbackup 1.1.9 broken in macports due to msgpack version
+      # see is_supported__msgpack() in site-packages/borg/helpers.py for a quick and ugly fix
+      - borgbackup
+      - cmake
+      - exiftool
+      - exiv2
+      - git
+      - gnutar
+      - graphviz
+      - most
+      - ncmpcpp
+      - { name: "nginx", variants: "-flv -mp4 +status" }
+      - { name: "nmap", variants: "-subversion" }
+      - nodejs12
+      - npm6
+      - osxfuse
+      - pkgconfig
+      - python27
+      - python37
+      - rclone
+      - rsync
+      - ssh-copy-id
+      - tree
+      - unrar
+      - wget
+      - xz
+    macports_python_select:
+      - { alias: "python2", version: "python27" }
+      - { alias: "python3", version: "python37" }
+      - { alias: "python" , version: "python37" }
+
+  roles:
+    - {role: "macports", become: yes, tags: ["never", "macports"]}
+    - {role: "webserver", tags: ["never", "webserver"] }
+    - {role: "dotfiles" }
+    - {role: "myscripts" }

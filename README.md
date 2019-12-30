@@ -21,7 +21,7 @@ Manually install [MacPorts](https://www.macports.org/install.php).
 ## Playbooks
 
 ```
-~> source $HOME/Library/nyx/venv/bin/activate```
+~> source $HOME/Library/nyx/venv/bin/activate
 ```
 
 Install MacPorts ports requires sudo password: ```~> ansible-playbook ringo.yml -t macports -K```

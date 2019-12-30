@@ -21,3 +21,27 @@
     - "git config --global user.name vinymeuh"
     - "git config --global user.email vinymeuh@gmail.com"
     - "git config --global credential.helper osxkeychain"
+
+- name: npm configuration
+  block:
+    - name: define npm prefix directory path
+      set_fact:
+        npm_prefix: "{{ '~/.npm-global' | expanduser }}"
+    - name: create directory {{ npm_prefix }}
+      file:
+        path: "{{ npm_prefix }}"
+        state: directory
+    - name: retrieve current npm prefix configuration
+      shell: npm config get prefix
+      register: current_npm_prefix
+      changed_when: false
+    - name: set npm prefix to {{ npm_prefix }}
+      command: npm config set prefix '{{ npm_prefix }}'
+      when: current_npm_prefix.stdout != npm_prefix
+    - name: install global npm packages
+      npm:
+        name: "{{ item }}"
+        global: yes
+      loop:
+        - "elm-format"
+        - "elm-test"

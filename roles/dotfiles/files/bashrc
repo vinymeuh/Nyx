@@ -54,6 +54,11 @@ fi
 #. Python
 pathprepend "$(python -m site --user-base)/bin"
 
+#. npm global
+if [ -d $HOME/.npm-global/bin ]; then
+    export PATH=$HOME/.npm-global/bin:$PATH
+fi
+
 #. User bin directory
 pathprepend "$HOME/bin"
 

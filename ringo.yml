@@ -14,6 +14,7 @@
       - git
       - gnutar
       - graphviz
+      - ImageMagick
       - most
       - ncmpcpp
       - { name: "nginx", variants: "-flv -mp4 +status" }

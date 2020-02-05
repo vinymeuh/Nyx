@@ -3,6 +3,7 @@
 
   vars:
     macports_packages:
+      - asciidoctor
       - bash
       - bash-completion
       # warning: borgbackup 1.1.9 broken in macports due to msgpack version

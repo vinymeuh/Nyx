@@ -26,6 +26,8 @@
       - pkgconfig
       - python27
       - python37
+      - python38
+      - py38-pip
       - rclone
       - rsync
       - ssh-copy-id
@@ -35,8 +37,10 @@
       - xz
     macports_python_select:
       - { alias: "python2", version: "python27" }
-      - { alias: "python3", version: "python37" }
-      - { alias: "python" , version: "python37" }
+      - { alias: "python3", version: "python38" }
+      - { alias: "python" , version: "python38" }
+      - { alias: "pip3", version: "pip38" }
+      - { alias: "pip", version: "pip38" }
 
   roles:
     - {role: "macports", become: yes, tags: ["never", "macports"]}

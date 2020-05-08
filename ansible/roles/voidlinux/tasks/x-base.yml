@@ -1,0 +1,20 @@
+- name: x-base > Install freedesktop.org related softwares
+  xbps: name=dbus,udisks2,upower
+
+- name: x-base > Enables D-Bus service
+  runit: name=dbus enabled=yes state=started
+
+- name: x-base > Install standalone alternatives to systemd
+  xbps: name=elogind
+
+- name: x-base > Install Xorg packages
+  xbps: name=xorg-minimal,xf86-video-intel,xorg-fonts,xrdb,xsetroot
+
+- name: x-base > Ensure /etc/X11/xorg.conf.d exists
+  file: path=/etc/X11/xorg.conf.d state=directory
+
+- name: x-base > Copy the keyboard configuration file to /etc/X11/xorg.conf.d
+  copy: src=00-keyboard.conf dest=/etc/X11/xorg.conf.d/
+
+- name: x-base > Install rxvt
+  xbps: name=rxvt-unicode,rxvt-unicode-terminfo

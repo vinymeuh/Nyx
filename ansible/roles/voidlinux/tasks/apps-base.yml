@@ -1,0 +1,19 @@
+- name: apps-base > Install base tools
+  xbps: name=dust,rcm,screen,tree,unzip,unrar,xz
+  with_items:
+    - curl
+    - dust
+    - gcc
+    - git
+    - go
+    - make
+    - nmap
+    - rcm
+    - rsync
+    - screen
+    - tree
+    - unzip
+    - unrar
+    - wget
+    - xtools
+    - xz

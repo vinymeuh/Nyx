@@ -1,0 +1,9 @@
+---
+- hosts: tojiko
+
+  tasks:
+    - name: Running tasks requiring root access
+      block:
+        - import_role: name=voidlinux
+      become: yes
+      tags: ["root"]

@@ -1,0 +1,7 @@
+configuration {
+   modi: "drun,ssh,window";
+   terminal: "alacritty";
+   sidebar-mode: false;
+   show-icons: true;
+   theme: "material";
+}

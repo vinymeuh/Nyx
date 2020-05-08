@@ -1,0 +1,9 @@
+     _______________
+    |  ___________  |        $(hostname)
+    | |  O     O  | |
+    | |  \_____/  | |        Kernel    $(uname -r)
+    | |___________| |        XBPS      $(xbps-query -l |grep -c ii) packages, $(xbps-install -Mun|wc -l) upgradable(s)
+    |_______________|        Bash      $BASH_VERSION
+   / *************** \\       Python    $(python --version| awk '{print $2}')
+  / ***************** \\      Shell     $0
+ -----------------------

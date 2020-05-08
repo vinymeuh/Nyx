@@ -1,0 +1,17 @@
+- name: apps > Install applications
+  xbps: name={{ item }}
+  with_items:
+    - acpi
+    - alacritty,alacritty-terminfo
+    - anki
+    - chromium
+    #- digikam # too much dependencies
+    - exiv2
+    - firefox,firefox-i18n-fr
+    - gnucash
+    - ImageMagick
+    - keepassxc
+    - ncmpcpp
+    - sxiv
+    - vscode
+    - vlc

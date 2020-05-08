@@ -1,0 +1,5 @@
+- name: javascript > Install Node.js
+  macports: name={{ item.name | default(item) }} variant={{ item.variant | default(omit) }}
+  with_items:
+    - nodejs12
+    - npm

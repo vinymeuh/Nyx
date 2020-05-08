@@ -1,0 +1,109 @@
+# bashrc
+#  by default, only used by interactive non-login shell
+
+#. functions to help us manage paths (shamelessly borrowed from Linux From Scratch)
+#. second argument is the name of the path variable to be modified (default: PATH)
+pathremove () {
+    local IFS=':'
+    local NEWPATH
+    local DIR
+    local PATHVARIABLE=${2:-PATH}
+    for DIR in ${!PATHVARIABLE} ; do
+        if [ "$DIR" != "$1" ] ; then
+            NEWPATH=${NEWPATH:+$NEWPATH:}$DIR
+        fi
+    done
+    export $PATHVARIABLE="$NEWPATH"
+}
+
+pathprepend () {
+    pathremove $1 $2
+    local PATHVARIABLE=${2:-PATH}
+    export $PATHVARIABLE="$1${!PATHVARIABLE:+:${!PATHVARIABLE}}"
+}
+
+pathappend () {
+    pathremove $1 $2
+    local PATHVARIABLE=${2:-PATH}
+    export $PATHVARIABLE="${!PATHVARIABLE:+${!PATHVARIABLE}:}$1"
+}
+export -f pathremove pathprepend pathappend
+
+#. set locale
+export LANG=fr_FR.UTF-8
+export LC_MESSAGES=en_US.UTF-8
+
+
+#. PATH
+pathprepend "$(python -m site --user-base)/bin"
+pathprepend "/usr/local/go/bin"
+pathprepend "$HOME/go/bin"
+pathprepend "$HOME/.bin"
+
+#. short-circuit for non-interactive shell
+case "$-" in
+    *i*);;
+    *) return;;
+esac
+
+#. add ":" to re-enable access to the standard system man pages
+export MANPATH=$MANPATH:
+
+#. bash shopt buitlin (https://www.gnu.org/software/bash/manual/html_node/The-Shopt-Builtin.html)
+shopt -s cdspell checkhash checkwinsize
+shopt -s histappend histreedit histverify lithist
+if [[ $BASH_VERSION =~ ^4.* ]]; then
+    shopt -s autocd direxpand dirspell
+fi
+
+export HISTCONTROL=ignoreboth:erasedups
+
+#. readline setup
+set -o emacs
+
+#. add environment variables for interactive shell
+export PAGER=less
+export GIT_EDITOR=vi
+
+#. banner
+if [ -f "$HOME/.banner" ]; then
+    if [[ $0 == "-bash" ]]; then
+        (echo "cat <<EOF" ; cat "$HOME/.banner" ; echo EOF ) | $SHELL 2>/dev/null
+    else
+        (echo "cat <<EOF" ; cat "$HOME/.banner" ; echo EOF ) | $0 2>/dev/null
+    fi
+fi
+
+#. set bash prompt
+prompt_command () {
+    local green='\e[0;36m'
+    local red='\e[0;31m'
+    local nc='\e[0m'
+
+    if [[ -n $VIRTUAL_ENV ]]; then
+        local venv="($(basename $VIRTUAL_ENV))"
+    fi
+
+    if [ $? -eq 0 ]; then local rc="ok"; else local rc="ko"; fi
+    case $rc in
+        ok) export PS1="${green}\u@\h $venv~> ${nc}";;
+        ko) export PS1="${red}\u@\h $venv~> ${nc}";;
+    esac
+}
+export PROMPT_COMMAND=prompt_command
+
+#. cleanup
+unset pathremove pathprepend pathappend
+
+#. aliases
+alias cp='cp -i'
+alias df='df -PH'
+alias h='history'
+alias ll='ls -lsa'
+alias ls='ls --color=auto'
+alias man='LANG=C man'
+alias mv='mv -i'
+alias rehash='hash -r'  # see bash/checkhash
+alias rm='rm -i'
+
+alias radiogaga='ncmpcpp -h radiogaga'

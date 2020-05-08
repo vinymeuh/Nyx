@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+
+help_msg() {
+    cat << EOF
+Usage:
+  backupphoto command
+
+Available commands:
+  all       Backup all files
+  fast      Backup only current year
+  check     Reports files that don't match using checksum
+
+Backup are based on modification time & size. 
+Use 'check' to test file integrity.
+
+Warning: only files in subdirectories Photos & RAW are backed up
+EOF
+}
+
+# PhotoHub backup directory
+BKPDIR="/Volumes/IcyBox/MyPhotoHubBackup"
+if [ ! -d "$BKPDIR" ]; then
+    echo "ERROR: backup disk not found ($BKPDIR)" 1>&2
+    exit 1
+fi
+
+# rclone
+RCLONE_BIN="/opt/local/bin/rclone"
+if [ ! -x "$RCLONE_BIN" ]; then
+    echo "ERROR: $RCLONE_BIN executable not found" 1>&2
+    exit 1
+fi
+RCLONE="$RCLONE_BIN --quiet --exclude .DS_Store"
+
+#-- Main --#
+if [ $# -ne 1 ]; then
+    echo "ERROR: invalid arguments" 1>&2
+    help_msg
+    exit 1
+fi
+
+case $1 in
+    all)
+        $RCLONE sync "$HOME/MyPhotoHub/Photos"  "$BKPDIR/MyPhotoHub/Photos"
+        $RCLONE sync "$HOME/MyPhotoHub/RAW"     "$BKPDIR/MyPhotoHub/RAW"
+
+        $RCLONE sync "/Volumes/HDD/MyPhotoHubArchive/RAW" "$BKPDIR/MyPhotoHubArchive/RAW"
+        ;;
+    fast)   
+        $RCLONE sync "$HOME/MyPhotoHub/Photos/$(date +%Y)" "$BKPDIR/MyPhotoHub/Photos/$(date +%Y)"
+        ;;
+    check)
+        $RCLONE check "$HOME/MyPhotoHub/Photos" "$BKPDIR/MyPhotoHub/Photos"
+        $RCLONE check "$HOME/MyPhotoHub/RAW"     "$BKPDIR/MyPhotoHub/RAW"
+
+        $RCLONE check "/Volumes/HDD/MyPhotoHubArchive/RAW" "$BKPDIR/MyPhotoHubArchive/RAW"
+        ;;
+    *)
+        help_msg
+        exit 1
+        ;;
+esac

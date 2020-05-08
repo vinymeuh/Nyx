@@ -1,0 +1,2 @@
+- name: audio > Install Pulse Audio
+  xbps: name=pulseaudio,pulsemixer

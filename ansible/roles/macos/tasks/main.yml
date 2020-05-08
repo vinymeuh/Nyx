@@ -1,0 +1,6 @@
+- name: Update Macports and the port tree
+  macports: selfupdate=yes
+
+- import_tasks: apps.yml
+- import_tasks: python.yml
+- import_tasks: javascript.yml

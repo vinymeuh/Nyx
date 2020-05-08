@@ -1,0 +1,30 @@
+- name: apps > Install applications
+  macports: name={{ item.name | default(item) }} variant={{ item.variant | default(omit) }}
+  with_items:
+    - asciidoctor
+    - bash
+    - bash-completion
+    # warning: borgbackup 1.1.9 broken in macports due to msgpack version
+    # see is_supported__msgpack() in site-packages/borg/helpers.py for a quick and ugly fix
+    - borgbackup
+    - cmake
+    - exiftool
+    - exiv2
+    - git
+    - gnutar
+    - graphviz
+    - ImageMagick
+    - most
+    - ncmpcpp
+    - { name: "nginx", variants: "-flv -mp4 +status" }
+    - { name: "nmap", variants: "-subversion" }
+    - osxfuse
+    - pkgconfig
+    - rcm
+    - rclone
+    - rsync
+    - ssh-copy-id
+    - tree
+    - unrar
+    - wget
+    - xz    

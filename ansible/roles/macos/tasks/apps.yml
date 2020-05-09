@@ -10,6 +10,7 @@
     - cmake
     - exiftool
     - exiv2
+    - fish
     - git
     - gnutar
     - graphviz

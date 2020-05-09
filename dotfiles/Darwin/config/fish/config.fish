@@ -12,7 +12,7 @@ set -x LC_MESSAGES en_US.UTF-8
 set PATH /opt/local/bin /opt/local/sbin $PATH
 set PATH /usr/local/go/bin $PATH
 set PATH (python -m site --user-base)/bin $PATH
-set PATH $HOME/.bin $HOME/bin $HOME/go/bin $PATH
+set PATH $HOME/.bin $HOME/go/bin $PATH
 
 #. Interactive shell
 if status --is-interactive

@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+cat <<EOF                           
+     _______________  
+    |  ___________  |        $(hostname)
+    | |  O     O  | |
+    | |  \_____/  | |        Kernel: $(uname -r)
+    | |___________| |        VoidLinux
+    |_______________|         - packages     : $(xbps-query -l | grep -c ii)
+   / *************** \\        - upgradable(s): $(xbps-install -Mun| wc -l)
+  / ***************** \\       - old kernel(s): $(vkpurge list | wc -l)      
+ ----------------------- 
+                             
+Bash  : $BASH_VERSION
+Fish  : $(fish -v | awk '{print $3}')
+Go    : $(go version| awk '{print $3}' |tr -d 'go')
+Python: $(python --version| awk '{print $2}')
+
+EOF

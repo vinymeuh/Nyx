@@ -1,8 +1,11 @@
 - name: apps-base > Install base tools
-  xbps: name=dust,rcm,screen,tree,unzip,unrar,xz
+  xbps: name={{ item }}
   with_items:
+    - acpi
+    - avahi, avahi-utils
     - curl
     - dust
+    - fish-shell
     - gcc
     - git
     - go
@@ -11,9 +14,15 @@
     - rcm
     - rsync
     - screen
+    - smbclient
     - tree
     - unzip
     - unrar
     - wget
     - xtools
     - xz
+
+- name: apps-base > Enable base services
+  runit: name={{ item }} enabled=yes state=started
+  with_items:
+    - avahi-daemon

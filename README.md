@@ -1,4 +1,4 @@
-# nyx
+# Nyx
 
 [Ansible](https://www.ansible.com/), [rcm](https://github.com/thoughtbot/rcm) and custom scripts to manage my computers.
 
@@ -7,7 +7,7 @@
 Ensure Python 3 is installed on master computer then:
 
 ```shell
-git clone git@github.com:vinymeuh/nyx-ng.git $HOME/Nyx
+git clone git@github.com:vinymeuh/Nyx.git $HOME/Nyx
 cd $HOME/Nyx/ansible
 python -m venv venv
 source venv/bin/activate
@@ -20,12 +20,18 @@ For each target hosts, ensure Python 3 is installed and copy SSH key from master
 ssh-copy-id -i ~./ssh/id_viny.pub user@host
 ```
 
+All playbooks require the password for sudo:
+
+```shell
+ansible-playbook deploy-xxx.yml -K
+```
+
 ## rcm for dotfiles
 
 Dotfiles are not pushed from master host but must be install individually on each hosts:
 
 ```shell
-git clone git@github.com:vinymeuh/nyx-ng.git $HOME/Nyx
+git clone git@github.com:vinymeuh/Nyx.git $HOME/Nyx
 cd $HOME/Nyx/dotfiles
 ./setup.sh
 ```

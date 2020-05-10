@@ -10,6 +10,10 @@ super + @space
 super + w
 	rofi -show window
 
+# file explorer
+super + e
+	thunar
+
 # make sxhkd reload its configuration files:
 super + Escape
 	pkill -USR1 -x sxhkd

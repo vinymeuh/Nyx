@@ -7,7 +7,7 @@ set -x LANG fr_FR.UTF-8
 set -x LC_MESSAGES en_US.UTF-8
 
 #. PATH
-set PATH /usr/local/go/bin $PATH
+set PATH $HOME/.cargo/bin /usr/local/go/bin $PATH
 set PATH (python -m site --user-base)/bin $PATH
 set PATH $HOME/.bin $HOME/go/bin $PATH
 

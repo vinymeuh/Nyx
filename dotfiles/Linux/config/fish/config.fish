@@ -13,10 +13,13 @@ set PATH $HOME/.bin $HOME/go/bin $PATH
 
 #. Interactive shell
 if status --is-interactive
+    #. Fish setup
     set fish_greeting
 
+    #. add ":" to re-enable access to the standard system man pages
     set MANPATH /opt/local/share/man \: $MANPATH
 
+    #. add environment variables for interactive shell
     set -x EDITOR vim
     set -x GIT_EDITOR vim
     set -x PAGER less

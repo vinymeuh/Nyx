@@ -1,0 +1,13 @@
+#
+# ~/.aliases for Linux
+#
+alias cp='cp -i'
+alias df='df -PH'
+alias h='history'
+alias ll='ls -lsa'
+alias ls='ls --color=auto'
+alias man='LANG=C man'
+alias mv='mv -i'
+alias radiogaga='ncmpcpp -h radiogaga'
+alias rehash='hash -r'  # see bash/checkhash
+alias rm='rm -i'

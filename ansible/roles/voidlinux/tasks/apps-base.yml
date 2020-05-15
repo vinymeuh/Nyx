@@ -12,6 +12,7 @@
     - make
     - nmap
     - rcm
+    - rustup
     - rsync
     - screen
     - smbclient

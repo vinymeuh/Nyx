@@ -1,4 +1,4 @@
-- name: Refresh XBPS repositories indexes
+- name: main > Refresh XBPS repositories indexes
   xbps: name=void-repo-nonfree update_cache=yes
 
 # Base system

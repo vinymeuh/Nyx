@@ -7,10 +7,10 @@
 Ensure Python 3 is installed on master computer then:
 
 ```shell
-git clone git@github.com:vinymeuh/Nyx.git $HOME/Nyx
-cd $HOME/Nyx/ansible
+git clone https://github.com/vinymeuh/Nyx.git $HOME/Nyx
+pcd $HOME/Nyx/ansible
 python -m venv venv
-source venv/bin/activate
+source venv/bin/activate.fish
 pip install -r requirements.txt
 ```
 
@@ -31,7 +31,7 @@ ansible-playbook deploy-xxx.yml -K
 Dotfiles are not pushed from master host but must be install individually on each hosts:
 
 ```shell
-git clone git@github.com:vinymeuh/Nyx.git $HOME/Nyx
+git clone https://github.com/vinymeuh/Nyx.git $HOME/Nyx
 cd $HOME/Nyx/dotfiles
 ./setup.sh
 ```

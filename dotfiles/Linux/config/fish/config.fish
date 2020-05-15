@@ -11,11 +11,6 @@ set PATH $HOME/.cargo/bin /usr/local/go/bin $PATH
 set PATH (python -m site --user-base)/bin $PATH
 set PATH $HOME/.bin $HOME/go/bin $PATH
 
-#. Login shell
-if status --is-login
-    eval (ssh-agent -c) > /dev/null
-end
-
 #. Interactive shell
 if status --is-interactive
     set fish_greeting

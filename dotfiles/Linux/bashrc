@@ -45,9 +45,9 @@ if [ ! -z "$PS1" ]; then
     export MANPATH=$MANPATH:
 
     #. add environment variables for interactive shell
-    export EDITOR=vim
-    export GIT_EDITOR=vim
+    export EDITOR=vi
+    export GIT_EDITOR=vi
     export PAGER=less
 
-    [ -f ./.aliases] && source ./.aliases
+    [ -f ./.aliases ] && source ./.aliases
 fi

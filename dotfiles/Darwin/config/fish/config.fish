@@ -10,7 +10,7 @@ set -x LC_MESSAGES en_US.UTF-8
 /usr/libexec/path_helper -c | source
 
 set PATH /opt/local/bin /opt/local/sbin $PATH
-set PATH /usr/local/go/bin $PATH
+set PATH $HOME/.cargo/bin /usr/local/go/bin $PATH
 set PATH (python -m site --user-base)/bin $PATH
 set PATH $HOME/.bin $HOME/go/bin $PATH
 

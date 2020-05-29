@@ -1,0 +1,16 @@
+#
+# ~/.aliases for macOS
+#
+alias cp='cp -i'
+alias df='df -PH'
+alias h='history'
+alias ldd='otool -L'
+alias ll='ls -lsa'
+alias ls='ls -G'
+alias man='LANG=C man'
+alias mv='mv -i'
+alias piconsole='screen /dev/cu.usbserial 115200'
+alias radiogaga='ncmpcpp -h radiogaga'
+alias rehash='hash -r'  # see bash/checkhash
+alias rm='rm -i'
+alias sss='/System/Library/CoreServices/ScreenSaverEngine.app/Contents/MacOS/ScreenSaverEngine'

@@ -5,6 +5,7 @@
     - avahi, avahi-utils
     - curl
     - dust
+    - exfat-utils
     - fish-shell
     - gcc
     - git

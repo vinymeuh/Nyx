@@ -4,9 +4,6 @@
     - asciidoctor
     - bash
     - bash-completion
-    # warning: borgbackup 1.1.9 broken in macports due to msgpack version
-    # see is_supported__msgpack() in site-packages/borg/helpers.py for a quick and ugly fix
-    - borgbackup
     - cmake
     - exiftool
     - exiv2

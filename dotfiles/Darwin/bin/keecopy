@@ -2,7 +2,7 @@
 #
 # Backup KeePass file locally and in Google Drive for mobile devices
 # 
-KEEPASS_DIRECTORY="${HOME}/Documents/KeePass"
+KEEPASS_DIRECTORY="${HOME}/VINY/var/keepass"
 KEEPASS_FILE="mespasswords.kdbx"
 BACKUP_DIRECTORY="${HOME}/Google Drive/KeePass"
 

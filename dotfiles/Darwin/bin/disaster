@@ -97,6 +97,10 @@ Backup() {
     local tgt=$(basename "$1")
 
     mapfile -t symlinks < <( cd "${dir}" && find "${tgt}" -type l -maxdepth 4 )
+    for i in "${!symlinks[@]}"
+    do 
+        symlinks[$i]="'${symlinks[$i]}'/*"
+    done
 
     mapfile -t excludes < <(GetExcludes "$1")
     for i in "${!excludes[@]}"

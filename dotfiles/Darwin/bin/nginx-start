@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-/opt/local/sbin/nginx -c $HOME/.nginx/nginx.conf

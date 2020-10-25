@@ -2,20 +2,17 @@
   xbps: name=ufw
 
 - name: firewall > Enable ufw IPV6 support
-  lineinfile:
-    path: /etc/default/ufw
-    regexp: '^IPV6='
-    line: 'IPV6=yes'
+  lineinfile: path=/etc/default/ufw regexp='^IPV6=' line='IPV6=yes'
+
+- name: firewall > Set ufw default policies
+  ufw: direction={{ item.direction }} default={{ item.default }}
+  with_items:
+    - { direction: "incoming", default: "deny" }
+    - { direction: "outgoing", default: "allow" }
+    - { direction: "routed", default: "deny" }
 
 - name: firewall > Allow incoming SSH from RFC1918 class C
   ufw: port=ssh rule=allow src=192.168.0.0/16
-
-- name: firewall > Set ufw default incoming policy
-  ufw: direction=incoming default=deny
-- name: firewall > Set ufw default outgoing policy
-  ufw: direction=outgoing default=allow
-- name: firewall > Set ufw default routed policy
-  ufw: direction=routed default=deny
 
 - name: firewall > Enable ufw at boot
   runit: name=ufw enabled=yes state=started

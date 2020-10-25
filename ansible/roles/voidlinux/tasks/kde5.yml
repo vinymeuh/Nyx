@@ -1,0 +1,12 @@
+- block:
+    - name: kde5 > Install D-Bus
+      xbps: name=dbus
+    - name: x-base > Enables D-Bus service
+      runit: name=dbus enabled=yes state=started
+
+- name: kde5 > Install KDE Plasma 5
+  xbps: name=kde5,konsole,dolphin
+
+- name: kde5 > Enable SDDM
+  runit: name=sddm state=started
+

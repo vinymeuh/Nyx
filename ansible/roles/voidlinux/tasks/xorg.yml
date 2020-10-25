@@ -1,0 +1,9 @@
+- name: xorg > Install minimal packages
+  xbps: name=xorg-minimal
+
+- name: x-base > Ensure /etc/X11/xorg.conf.d exists
+  file: path=/etc/X11/xorg.conf.d state=directory
+
+- name: x-base > Copy the keyboard configuration file to /etc/X11/xorg.conf.d
+  copy: src=00-keyboard.conf dest=/etc/X11/xorg.conf.d/
+

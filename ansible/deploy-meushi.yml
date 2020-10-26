@@ -5,10 +5,12 @@
   tasks:
     - import_role: name=voidlinux tasks_from=base
     - import_role: name=voidlinux tasks_from=firewall
-   
-    - name: "meushi > Install NVidia driver"
-      xbps: name=nvidia
-
+    - import_role: name=voidlinux tasks_from=nvidia
     - import_role: name=voidlinux tasks_from=xorg
     - import_role: name=voidlinux tasks_from=kde5
 
+    - name: Install my favorites softwares
+      xbps: name={{ item }}
+      with_items:
+        - chromium
+      tags: ['softwares']

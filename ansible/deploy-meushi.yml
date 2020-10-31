@@ -6,11 +6,24 @@
     - import_role: name=voidlinux tasks_from=base
     - import_role: name=voidlinux tasks_from=firewall
     - import_role: name=voidlinux tasks_from=nvidia
+    - import_role: name=voidlinux tasks_from=audio
     - import_role: name=voidlinux tasks_from=xorg
     - import_role: name=voidlinux tasks_from=kde5
 
     - name: Install my favorites softwares
       xbps: name={{ item }}
       with_items:
+        - anki
         - chromium
+        - exiftool
+        - exiv2
+        - gnucash
+        - ncmpcpp
+        - ImageMagick
+        - keepassxc
+        - okular
+        - quodlibet
+        - rawtherapee
+        - vscode
+        - vlc
       tags: ['softwares']

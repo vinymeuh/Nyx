@@ -5,8 +5,11 @@
       runit: name=dbus enabled=yes state=started
 
 - name: kde5 > Install KDE Plasma 5
-  xbps: name=kde5,dolphin,kate5,konsole
+  xbps: name=kde5,dolphin,kate5,konsole,kwalletmanager,ksystemlog
+
+- name: kde5 > Install KDE Apps
+  xbps: name=kcalc,kdialog,krename,spectacle,okteta
+
 
 - name: kde5 > Enable SDDM
   runit: name=sddm state=started
-

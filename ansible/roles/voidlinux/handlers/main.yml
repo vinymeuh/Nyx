@@ -1,0 +1,2 @@
+- name: reconfigure-libc
+  command: xbps-reconfigure -f glibc-locales

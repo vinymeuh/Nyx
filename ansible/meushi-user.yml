@@ -1,0 +1,5 @@
+- hosts: meushi
+
+  tasks:
+    - import_role: name=usersetup tasks_from=nyx
+    - import_role: name=usersetup tasks_from=bin

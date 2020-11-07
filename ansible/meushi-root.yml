@@ -8,7 +8,8 @@
     - import_role: name=voidlinux tasks_from=nvidia
     - import_role: name=voidlinux tasks_from=audio
     - import_role: name=voidlinux tasks_from=xorg
-    - import_role: name=voidlinux tasks_from=kde5
+    #- import_role: name=voidlinux tasks_from=kde5
+    - import_role: name=voidlinux tasks_from=gnome
 
     - name: Install my favorites softwares
       xbps: name={{ item }}

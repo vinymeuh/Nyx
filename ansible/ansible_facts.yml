@@ -1,0 +1,6 @@
+- hosts: meushi
+
+  tasks:
+    - name: Print all available facts
+      ansible.builtin.debug:
+        var: ansible_facts

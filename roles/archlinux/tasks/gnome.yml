@@ -1,0 +1,5 @@
+- name: gnome > Install Gnome
+  community.general.pacman: name=gnome
+
+- name: gnome > Enable GDM
+  ansible.builtin.systemd: name=gdm enabled=yes state=started

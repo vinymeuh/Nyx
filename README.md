@@ -8,7 +8,7 @@ Ensure Python 3 is installed on master computer then:
 
 ```shell
 git clone https://github.com/vinymeuh/Nyx.git $HOME/Nyx
-pcd $HOME/Nyx/ansible
+cd $HOME/Nyx
 python -m venv venv
 source venv/bin/activate.fish
 pip install -r requirements.txt
@@ -23,7 +23,8 @@ ssh-copy-id -i ~./ssh/id_viny.pub user@host
 All playbooks require the password for sudo:
 
 ```shell
-ansible-playbook deploy-xxx.yml -K
+ansible-playbook <hostname>-root.yml -K
+ansible-playbook <hostname>-user.yml
 ```
 
 ## rcm for dotfiles

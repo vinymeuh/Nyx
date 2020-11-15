@@ -1,0 +1,37 @@
+- name: base > Install base tools
+  community.general.pacman: name={{ item }}
+  with_items:
+    - acpi
+    - base-devel
+    - curl
+    - exfat-utils
+    - fish
+    - fzf
+    - git
+    - lm_sensors
+    - lshw
+    - nmap
+    - openssh
+    - rsync
+    - screen
+    - smbclient
+    - tree
+    - unrar,unzip,xz
+
+- name: base > Enable locale
+  ansible.builtin.lineinfile:
+    dest: /etc/locale.gen
+    regexp: '^#({{ item }})$'
+    line: '\1'
+    backrefs: yes
+  with_items:
+    - 'en_US.UTF-8 UTF-8'
+    - 'fr_FR.UTF-8 UTF-8'
+  notify: locale-gen
+
+- name: base > Set system locale
+  ansible.builtin.lineinfile: dest="/etc/locale.conf" line="LANG=en_US.UTF-8" create=yes
+
+- name: base > Set keymap
+  ansible.builtin.lineinfile: dest="/etc/vconsole.conf" line="KEYMAP=fr" create=yes
+

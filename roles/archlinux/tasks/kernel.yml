@@ -1,0 +1,12 @@
+- name: kernel > Install different kernel flavours
+  community.general.pacman: name={{ item }}
+  with_items:
+    - linux,linux-headers
+    - linux-lts,linux-lts-headers
+
+- name: kernel > Install kernel firmwares
+  community.general.pacman: name=linux-firmware
+
+- name: kernel > Install bootloader packages
+  community.general.pacman: name=dosfstools,efibootmgr,grub,mtools,os-prober
+

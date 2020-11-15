@@ -1,0 +1,6 @@
+- name: audio > Install PulseAudio
+  community.general.pacman: name=pulseaudio,pulseaudio-alsa
+
+- name: audio > Install PulseAudio console front-ends
+  community.general.pacman: name=pulsemixer
+

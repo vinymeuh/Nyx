@@ -1,0 +1,31 @@
+---
+- hosts: meushi
+  become: yes
+
+  tasks:
+    - import_role: name=archlinux tasks_from=kernel
+    - import_role: name=archlinux tasks_from=base
+    - import_role: name=archlinux tasks_from=network
+      #- import_role: name=voidlinux tasks_from=firewall
+    - import_role: name=archlinux tasks_from=audio
+      #- import_role: name=voidlinux tasks_from=xorg
+    #- import_role: name=voidlinux tasks_from=kde5
+    - import_role: name=archlinux tasks_from=gnome
+
+      #    - name: Install my favorites softwares
+      #xbps: name={{ item }}
+      #with_items:
+      #  - anki
+      #  - chromium
+      #  - exiftool
+      #  - exiv2
+      #  - gnucash
+      #  - ncmpcpp
+      #  - ImageMagick
+      #  - keepassxc
+      #  - okular
+      #  - quodlibet
+      #  - rawtherapee
+      #  - vscode
+      #  - vlc
+      #tags: ['softwares']

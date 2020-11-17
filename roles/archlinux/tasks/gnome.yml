@@ -1,5 +1,9 @@
 - name: gnome > Install Gnome
-  community.general.pacman: name=gnome
+  community.general.pacman: name={{ item }}
+  with_items:
+    - gnome
+    - chrome-gnome-shell
 
 - name: gnome > Enable GDM
   ansible.builtin.systemd: name=gdm enabled=yes state=started
+

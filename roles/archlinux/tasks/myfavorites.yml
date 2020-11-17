@@ -1,0 +1,17 @@
+- name: myfavorites > Install my favorites softwares
+  community.general.pacman: name={{ item }}
+  with_items:
+    - anki
+    - chromium
+    - exiv2
+    - gnucash
+    - ncmpcpp
+    - imagemagick
+    - keepassxc
+  #  - okular
+    - perl-image-exiftool
+    - quodlibet
+    - rawtherapee
+  #  - vscode
+    - vlc
+

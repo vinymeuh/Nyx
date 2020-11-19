@@ -1,0 +1,5 @@
+- name: fonts > Install fonts
+  community.general.pacman: name={{ item }}
+  with_items:
+    - adobe-source-han-sans-jp-fonts
+    - adobe-source-han-serif-jp-fonts

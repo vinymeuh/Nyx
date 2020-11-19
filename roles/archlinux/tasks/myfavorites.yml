@@ -10,8 +10,9 @@
     - keepassxc
   #  - okular
     - perl-image-exiftool
+    - pycharm-community-edition
     - quodlibet
     - rawtherapee
-  #  - vscode
+    - vscode
     - vlc
 

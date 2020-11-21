@@ -23,7 +23,7 @@ ssh-copy-id -i ~./ssh/id_viny.pub user@host
 All playbooks require the password for sudo:
 
 ```shell
-ansible-playbook <hostname>-root.yml -K
+ansible-playbook playbooks/<hostname>-root.yml -K
 ansible-playbook <hostname>-user.yml
 ```
 

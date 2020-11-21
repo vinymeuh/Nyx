@@ -11,6 +11,7 @@
     - lm_sensors
     - lshw
     - nmap
+    - man-db,man-pages
     - openssh
     - rsync
     - screen

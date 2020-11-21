@@ -1,4 +1,4 @@
 complete -c radiogaga -f
 function radiogaga
-    ncmpcpp -h radiogaga
+    ncmpcpp -h radiogaga.local
 end

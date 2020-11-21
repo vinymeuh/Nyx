@@ -30,4 +30,5 @@ if status --is-interactive
     alias man='LANG=C command man'
     alias mv='mv -i'
     alias rm='rm -i'
+    alias vi=vim
 end

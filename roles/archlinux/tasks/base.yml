@@ -13,6 +13,7 @@
     - nmap
     - man-db,man-pages
     - openssh
+    - pacman-contrib
     - rsync
     - screen
     - smbclient

@@ -2,29 +2,39 @@
 
 [Ansible](https://www.ansible.com/), [rcm](https://github.com/thoughtbot/rcm) and custom scripts to manage my computers.
 
-## ansible for systems setup
+## Ansible for systems setup
 
-Ensure Python 3 is installed on master computer then:
+### Install on controller host
+
+1. Install using [pyenv installer](https://github.com/pyenv/pyenv-installer)
+
+List Python avaibable versions for install with ```pyenv install --list```.
+
+```shell
+pyenv install x.x.x
+pyenv virtualenv x.x.x nyx
+```
+
+2. Bootstrap Nyx
 
 ```shell
 git clone https://github.com/vinymeuh/Nyx.git $HOME/Nyx
 cd $HOME/Nyx
-python -m venv venv
-source venv/bin/activate.fish
+pyenv activate nyx
 pip install -r requirements.txt
 ```
 
-For each target hosts, ensure Python 3 is installed and copy SSH key from master computer:
+3. For each target hosts, ensure Python 3 is installed and copy SSH key from master computer:
 
 ```shell
 ssh-copy-id -i ~./ssh/id_viny.pub user@host
 ```
 
-All playbooks require the password for sudo:
+### Run playbooks
 
 ```shell
 ansible-playbook playbooks/<hostname>-root.yml -K
-ansible-playbook <hostname>-user.yml
+ansible-playbook playbooks/<hostname>-user.yml
 ```
 
 ## rcm for dotfiles

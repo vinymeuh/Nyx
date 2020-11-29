@@ -2,7 +2,6 @@
   community.general.pacman: name={{ item }}
   with_items:
     - avahi,nss-mdns  # replace with systemd-resolved built-in mDNS
-    - wpa_supplicant
 
 - name: network > Enable mDNS hostname resolution
   ansible.builtin.lineinfile:
@@ -17,5 +16,3 @@
     - avahi-daemon
     - systemd-networkd
     - systemd-resolved
-    - wpa_supplicant@wlp6s0
-

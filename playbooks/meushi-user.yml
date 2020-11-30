@@ -1,0 +1,6 @@
+- hosts: meushi
+
+  tasks:
+    - import_role: name=usersetup tasks_from=base
+    - import_role: name=usersetup tasks_from=rcm
+    - import_role: name=usersetup tasks_from=gnome

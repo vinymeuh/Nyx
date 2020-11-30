@@ -1,0 +1,4 @@
+- name: gnome > Gnome tweaking
+  command: "{{ item }}"
+  with_items:
+    - gsettings set org.gnome.desktop.interface enable-hot-corners false

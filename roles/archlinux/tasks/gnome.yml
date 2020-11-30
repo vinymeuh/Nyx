@@ -1,0 +1,54 @@
+- name: gnome > Install Gnome
+  community.general.pacman: name={{ item }}
+  with_items:
+    - gnome-shell,gnome-shell-extensions,chrome-gnome-shell,mutter
+    - baobab
+    - epiphany
+    - file-roller 
+    - gdm
+    - gnome-backgrounds
+    - gnome-calculator
+    - gnome-characters
+    - gnome-clocks
+    - gnome-color-manager
+    - gnome-contacts
+    - gnome-control-center
+    - gnome-disk-utility
+    - gnome-font-viewer
+    - gnome-keyring
+    - gnome-logs
+    - gnome-menus
+    - gnome-screenshot
+    - gnome-session
+    - gnome-settings-daemon
+    - gnome-software
+    - gnome-system-monitor
+    - gnome-terminal
+    - gnome-themes-extra
+    - gnome-user-share
+    - gnome-video-effects
+    - gnome-weather
+    - gvfs,gvfs-afc,gvfs-goa,gvfs-google,gvfs-gphoto2,gvfs-mtp,gvfs-nfs,gvfs-smb
+    - nautilus
+    - simple-scan
+    - tracker,tracker-miners
+    - tracker3,tracker3-miners
+    - xdg-user-dirs-gtk
+
+- name: gnome > Install Gnome extra
+  community.general.pacman: name={{ item }}
+  with_items:
+    - dconf-editor
+    - ghex
+    - gnome-tweaks
+    - polari
+    - sysprof
+
+- name: gnome > Install KDE better apps
+  community.general.pacman: name={{ item }}
+  with_items:
+    - kate
+    - okular
+
+- name: gnome > Enable GDM
+  ansible.builtin.systemd: name=gdm enabled=yes state=started

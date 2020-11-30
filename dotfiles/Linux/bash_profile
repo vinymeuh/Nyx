@@ -1,3 +1,0 @@
-# bash_profile
-#  by default, only used by interactive login shell
-if [ -f "$HOME/.bashrc" ]; then source "$HOME/.bashrc"; fi

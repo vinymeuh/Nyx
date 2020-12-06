@@ -1,0 +1,77 @@
+#!/usr/bin/env bash
+#
+# Backup KeePass file locally and in Google Drive for mobile devices
+# 
+KEEPASS_DIRECTORY="${HOME}/VINY/var/keepass"
+KEEPASS_FILE="mespasswords.kdbx"
+BACKUP_DIRECTORY="${HOME}/Google Drive/KeePass"
+
+LAUNCHD_FILE="${HOME}/Library/LaunchAgents/nyx.keecopy.plist"
+
+MYPATH="$(cd $(dirname $0); pwd)/$(basename $0)"
+
+help_msg() {
+    cat << EOF
+Usage: $(basename $0) install|start
+EOF
+}
+
+create_launchd_file() {
+    cat <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key><string>nyx.keecopy</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>$MYPATH</string>
+        <string>start</string>
+    </array>
+    <key>StandardOutPath</key>   <string>$KEEPASS_DIRECTORY/keecopy.log</string>
+    <key>StandardErrorPath</key> <string>$KEEPASS_DIRECTORY/keecopy.log</string>
+    <key>WatchPaths</key>
+    <array>
+        <string>$KEEPASS_DIRECTORY/$KEEPASS_FILE</string>
+    </array>
+    <key>ThrottleInterval</key> <integer>60</integer>
+</dict>
+</plist>
+EOF
+}
+
+
+## Main ##
+case $1 in
+    install)
+        launchctl unload "$LAUNCHD_FILE"
+        create_launchd_file > "$LAUNCHD_FILE"
+        launchctl load "$LAUNCHD_FILE"
+        ;;
+    start)
+        if [ ! -f "${KEEPASS_DIRECTORY}/${KEEPASS_FILE}" ]; then
+            echo "File '${KEEPASS_DIRECTORY}/${KEEPASS_FILE}' does not exists"
+            exit 1
+        fi
+        # local copy
+        cmd="cp '${KEEPASS_DIRECTORY}/${KEEPASS_FILE}' '${KEEPASS_DIRECTORY}/${KEEPASS_FILE}.$(date +%Y%m%d_%H%M%S)'"
+        echo $cmd
+        eval $cmd
+        if [ $? -ne 0 ]; then
+            /usr/bin/osascript -e 'display notification "Problem with local copy" with title "keecopy"'
+        fi
+        # Google Drive
+        cmd="cp -f '${KEEPASS_DIRECTORY}/${KEEPASS_FILE}' '${BACKUP_DIRECTORY}'"
+        echo $cmd
+        eval $cmd        
+        if [ $? -ne 0 ]; then
+            /usr/bin/osascript -e 'display notification "Problem with cloud copy" with title "keecopy"'
+        fi
+        # keep 60 days of copy
+        find "${KEEPASS_DIRECTORY}" -ctime +60 -name "${KEEPASS_FILE}.2*" -exec rm {} \;
+        if [ $? -ne 0 ]; then
+            /usr/bin/osascript -e 'display notification "Problem with purge older backups" with title "keecopy"'
+        fi
+        ;;
+    *) help_msg && exit 1;;
+esac

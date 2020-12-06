@@ -2,11 +2,11 @@
 
 [Ansible](https://www.ansible.com/), [rcm](https://github.com/thoughtbot/rcm) and custom scripts to manage my computers.
 
-## Ansible for systems setup
+## Install
 
-### Install on controller host
+Note that install must be do locally on each host to be configured. Most of playbooks remote execution should be ok but dotfiles are supposed to be managed locally in a clone of this repository.
 
-1. Install using [pyenv installer](https://github.com/pyenv/pyenv-installer)
+1. Install **pyenv** using [pyenv installer](https://github.com/pyenv/pyenv-installer)
 
 List Python avaibable versions for install with ```pyenv install --list```.
 
@@ -24,13 +24,9 @@ pyenv activate nyx
 pip install -r requirements.txt
 ```
 
-3. For each target hosts, ensure Python 3 is installed and copy SSH key from master computer:
+3. On macOS, install [Homebrew](https://docs.brew.sh/Installation).
 
-```shell
-ssh-copy-id -i ~./ssh/id_viny.pub user@host
-```
-
-### Run playbooks
+## Run Ansible playbooks
 
 ```shell
 ansible-playbook playbooks/<hostname>-root.yml -K
@@ -39,10 +35,6 @@ ansible-playbook playbooks/<hostname>-user.yml
 
 ## rcm for dotfiles
 
-Dotfiles are not pushed from master host but must be install individually on each hosts:
+After the inital rcm setup done by the task [rcm](roles/usersetup/tasks/rcm.yml) from **usersetup** role, configuration files can be managed directly in the reposittory.
 
-```shell
-git clone https://github.com/vinymeuh/Nyx.git $HOME/Nyx
-cd $HOME/Nyx/dotfiles
-./setup.sh
-```
+If necessary, rcm can be manually used with ```rcup -f -v```  

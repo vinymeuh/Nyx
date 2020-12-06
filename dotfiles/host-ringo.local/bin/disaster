@@ -1,0 +1,180 @@
+#!/usr/bin/env bash
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# A restic wrapper to manage my backups on two external disks
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Securely store the restic password
+#  (macOS): ~> security add-generic-password -D secret -U -a $USER -s disaster -w THE_PASSWORD
+#
+# Initialize a repository
+#  ~> restic init --repo /path/to/the/repository
+#
+# Steps to restore (Linux)
+#  ~> sudo mount /dev/sdb1 /mnt -ouid=1000,gid=1000
+#  ~> set -x RESTIC_REPOSITORY /mnt/repository
+#  ~> set -x RESTIC_PASSWORD "xxx"
+#  ~> restic check
+#  ~> restic snapshots
+#  ~> restic ls latest
+#  ~> restic restore latest --target $HOME
+
+PrintHelp() {
+    cat << EOF
+Usage:
+  disaster [command]
+
+Available Commands:
+  backup      Create a new backup
+  check       Check repository integrity
+  excludes    List directories excluded (.nodisater)
+  purge       Delete snapshots according to backup policy
+  snapshots   List snapshots
+  stats       Show repository statistics
+
+EOF
+}
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Msg() {
+    echo "$(date '+%Y-%m-%d %H:%M:%S') $1" 1>&2
+}
+
+Info() {
+    Msg "[INFO] $1"
+}
+
+Abort() {
+    Msg "[ABORT] $1"
+    Msg "[ABORT] -- [FINISHED WITH ERROR] ----------------------------"
+    exit 1
+}
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CheckExecutable() {
+    local restic_version=$(restic version)
+    if [ $? -ne 0 ]; then
+        Abort "command 'restic version' failed"
+    fi
+    restic_version=$(echo $restic_version | cut -d ' ' -f2)
+    Info "restic version is ${restic_version}"
+}
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+GetBackupDisk() {
+    if mount | grep '/Volumes/Disaster-A' > /dev/null; then
+        eval "${1}='/Volumes/Disaster-A'" 
+    elif mount | grep '/Volumes/Disaster-B' > /dev/null; then
+        eval "${1}='/Volumes/Disaster-B'" 
+    else
+        Abort "backup disk not found (Disaster-A or Disaster-B)"
+    fi
+}
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+GetSecret() {
+    eval "${1}=$(security find-generic-password -a $USER -s disaster -w)" 
+}
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+TestRepository() {
+    repo="$1"
+    if [ ! -d "${repo}" ]; then
+        Abort "directory '${repo}' does not exists"
+    fi
+    if [ ! -r "${repo}/config" ]; then
+        Abort "'${repo}' is not a valid restic repository"
+    fi
+}
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+GetExcludes() {
+    local dir=$(dirname "$1")
+    local tgt=$(basename "$1")
+
+    mapfile -t excludes < <( cd "${dir}" && find -L "${tgt}" -name .nodisaster -maxdepth 4 ) 
+    for d in ${excludes[*]}
+    do
+        echo "$(dirname $d)"
+    done
+}
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Backup() {
+    local dir=$(dirname "$1")
+    local tgt=$(basename "$1")
+
+    mapfile -t symlinks < <( cd "${dir}" && find "${tgt}" -type l -maxdepth 4 )
+    for i in "${!symlinks[@]}"
+    do 
+        symlinks[$i]="'${symlinks[$i]}'/*"
+    done
+
+    mapfile -t excludes < <(GetExcludes "$1")
+    for i in "${!excludes[@]}"
+    do 
+        excludes[$i]="--exclude '${excludes[$i]}'"
+    done
+
+    local restic_cmd="cd '${dir}' && restic backup '${tgt}' ${symlinks[*]} --exclude '**/.DS_Store' ${excludes[*]}"
+    printf "$restic_cmd\n"
+    eval $restic_cmd
+}
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Purge() {
+    local restic_cmd="restic forget --keep-last 6 --prune"
+    printf "$restic_cmd\n"
+    eval $restic_cmd
+}
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Check() {
+    local restic_cmd="restic check"
+    printf "$restic_cmd\n"
+    eval $restic_cmd    
+}
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Main() {
+    CheckExecutable
+
+    GetBackupDisk backup_disk
+    Info "backup disk is '${backup_disk}'"
+
+    declare -x RESTIC_REPOSITORY
+    RESTIC_REPOSITORY="${backup_disk}/repository"
+    TestRepository "${RESTIC_REPOSITORY}"
+    Info "RESTIC_REPOSITORY='${RESTIC_REPOSITORY}'"
+
+    declare -x RESTIC_PASSWORD
+    GetSecret RESTIC_PASSWORD
+
+    case $1 in
+        backup)
+            Info "-- [BACKUP] ------------------------------------------"
+            Backup "$HOME/VINY"
+            Info "-- [PURGE] -------------------------------------------"
+            Purge
+            Info "-- [CHECK] -------------------------------------------"
+            Check
+            ;;
+        check)
+            Info "-- [CHECK] -------------------------------------------"
+            Check
+            ;;
+        excludes)
+            Info "-- [EXCLUDES] ----------------------------------------"
+            GetExcludes "$HOME/VINY"
+            ;;
+        purge)
+            Info "-- [PURGE] -------------------------------------------"
+            Purge
+            ;;            
+        snapshots)
+            Info "-- [SNAPSHOTS] ---------------------------------------"
+            restic snapshots
+            ;;
+        stats)
+            Info "-- [STATS] -------------------------------------------"
+            restic stats --mode raw-data
+            restic stats --mode restore-size
+            ;;            
+        *) PrintHelp && exit 1;;
+    esac
+}
+
+Info "-- [STARTING] ----------------------------------------"
+Info "command line is $0 $*"
+Main "$@"
+Info "-- [FINISHED SUCCESSFULLY] ---------------------------"
+exit 0

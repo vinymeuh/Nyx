@@ -1,9 +1,0 @@
----
-- hosts: ringo
-
-  tasks:
-    - name: Running tasks requiring root access
-      block:
-        - import_role: name=macos
-      become: yes
-      tags: ["root"]

@@ -6,14 +6,9 @@
 
 - name: base > Check fish shell is available
   command: which fish
-  register: which_fish
-  changed_when: false
-  ignore_errors: true
-
-- name: base > Fail if fish shell is not available
-  fail: msg="fish shell in not available, install it and retry"
-  when: which_fish.rc != 0
+  changed_when: False
 
 - name: base > Fail if user default shell is not fish
   fail: msg="user default shell is not fish, fix it and retry"
-  when: ansible_facts.user_shell is not match("/.*/fish$")
+  when: 
+    - (ansible_os_family != "Darwin" and ansible_facts.user_shell is not match("/.*/fish$"))

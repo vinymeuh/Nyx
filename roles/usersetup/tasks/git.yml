@@ -1,0 +1,8 @@
+- name: git > Setup my GitHub identity
+  community.general.git_config: scope=global name="{{ item.name }}" value="{{ item.value }}"
+  with_items:
+    - { name: "user.name", value: "vinymeuh" }
+    - { name: "user.email", value: "vinymeuh@gmail.com" }
+
+- name: git > Setup my git credential helper on macOS
+  community.general.git_config: scope=global name=credential.helper value=osxkeychain

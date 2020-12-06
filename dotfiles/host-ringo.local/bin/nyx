@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+cat <<EOF
+                             $(hostname)
+     _______________  
+    |  ___________  |        macOS       : $(sw_vers -productVersion)
+    | |  O     O  | |        MacPorts    : $(port -q version) 
+    | |  \_____/  | |         - packages : $(port installed | wc -l | awk '{print $1}')
+    | |___________| |         - inactives: $(port installed | grep -v active | wc -l | awk '{print $1}') 
+    |_______________|         - outdated : $(port outdated | grep -c \<)
+   / *************** \\  
+  / ***************** \\        
+ ----------------------- 
+                             
+Bash  : $BASH_VERSION
+Fish  : $(fish -v | awk '{print $3}')
+Go    : $(go version| awk '{print $3}' |tr -d 'go')
+Python: $(python --version| awk '{print $2}')
+
+EOF

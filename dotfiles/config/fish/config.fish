@@ -5,18 +5,18 @@
 set -x LANG fr_FR.UTF-8
 set -x LC_MESSAGES en_US.UTF-8
 
-if [ -x "$HOME/.pyenv/bin/pyenv" ]
-    set -x PYENV_ROOT $HOME/.pyenv
-    set PATH $PYENV_ROOT/bin $PATH
-    pyenv init - | source
-else
-    echo (set_color -o yellow)"WARNING: pyenv not found"(set_color normal)
-end
-
-set PATH $HOME/.bin $HOME/go/bin $PATH
+set PATH $HOME/.bin $HOME/go/bin $PATH /usr/local/bin
 
 if status --is-interactive
     set fish_greeting   # disable fish greeting
+
+    if [ -x "$HOME/.pyenv/bin/pyenv" ]
+        set -x PYENV_ROOT $HOME/.pyenv
+        set PATH $PYENV_ROOT/bin $PATH
+        pyenv init - | source
+    else
+        echo (set_color -o yellow)"WARNING: pyenv not found"(set_color normal)
+    end
 
     set -x EDITOR vi
     set -x GIT_EDITOR vi

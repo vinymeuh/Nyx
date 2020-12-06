@@ -1,6 +1,6 @@
 [all]
 meushi ansible_connection=local
-ringo ansible_connection=local ansible_python_interpreter=./venv/bin/python3
+ringo ansible_connection=local
 tojiko
 
 [all:vars]

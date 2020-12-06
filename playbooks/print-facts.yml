@@ -1,4 +1,5 @@
-- hosts: meushi
+# Usage: ansible-playbook --limit <hostname> playbooks/print-facts.yml
+- hosts: all
 
   tasks:
     - name: Print all available facts

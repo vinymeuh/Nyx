@@ -1,4 +1,4 @@
-- name: gnome > Install Gnome
+- name: gnome > Install my selection from 'gnome' group
   community.general.pacman: name={{ item }}
   with_items:
     - gnome-shell,gnome-shell-extensions,chrome-gnome-shell,mutter
@@ -35,7 +35,7 @@
     - tracker3,tracker3-miners
     - xdg-user-dirs-gtk
 
-- name: gnome > Install Gnome extra
+- name: gnome > Install my selection from 'gnome-extra' group
   community.general.pacman: name={{ item }}
   with_items:
     - dconf-editor
@@ -43,12 +43,6 @@
     - gnome-tweaks
     - polari
     - sysprof
-
-- name: gnome > Install KDE better apps
-  community.general.pacman: name={{ item }}
-  with_items:
-    - kate
-    - okular
 
 - name: gnome > Enable GDM
   ansible.builtin.systemd: name=gdm enabled=yes state=started

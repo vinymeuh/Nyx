@@ -4,10 +4,13 @@
     - anki
     - chromium
     - exiv2
+    - geary
     - gnucash
-    - ncmpcpp
     - imagemagick
+    - kate
     - keepassxc
+    - ncmpcpp
+    - okular
     - perl-image-exiftool
     - pycharm-community-edition
     - quodlibet

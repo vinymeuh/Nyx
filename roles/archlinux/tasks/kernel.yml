@@ -10,3 +10,18 @@
 - name: kernel > Install bootloader packages
   community.general.pacman: name=dosfstools,efibootmgr,grub,mtools,os-prober
 
+- name: kernel > Disable GRUB timeout
+  ansible.builtin.lineinfile: dest=/etc/default/grub regexp='^GRUB_TIMEOUT=' line='GRUB_TIMEOUT=-1'
+  notify: grub-mkconfig
+
+- name: kernel > Set GRUB default linux command line (remove quiet)
+  ansible.builtin.lineinfile: dest=/etc/default/grub regexp='^GRUB_CMDLINE_LINUX_DEFAULT=' line='GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3"'
+  notify: grub-mkconfig
+
+- name: kernel > Make GRUB remember the last selection (1/2)
+  ansible.builtin.lineinfile: dest=/etc/default/grub regexp='^GRUB_DEFAULT=' line='GRUB_DEFAULT="saved"'
+  notify: grub-mkconfig
+
+- name: kernel > Make GRUB remember the last selection (2/2)
+  ansible.builtin.lineinfile: dest=/etc/default/grub regexp='^#GRUB_SAVEDEFAULT=' line='GRUB_SAVEDEFAULT="true"'
+  notify: grub-mkconfig

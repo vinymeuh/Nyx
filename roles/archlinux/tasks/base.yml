@@ -14,6 +14,7 @@
     - man-db,man-pages
     - openssh
     - pacman-contrib
+    - python,python-psutil
     - rsync
     - screen
     - smbclient

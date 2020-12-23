@@ -5,7 +5,7 @@
 set -x LANG fr_FR.UTF-8
 set -x LC_MESSAGES en_US.UTF-8
 
-set PATH $HOME/.bin $HOME/go/bin $PATH /usr/local/bin
+set PATH $HOME/.bin $HOME/go/bin /usr/local/bin $PATH 
 
 if status --is-interactive
     set fish_greeting   # disable fish greeting

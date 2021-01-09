@@ -6,3 +6,8 @@
 
 - name: git > Setup my git credential helper on macOS
   community.general.git_config: scope=global name=credential.helper value=osxkeychain
+  when: ansible_os_family == 'Darwin'
+
+- name: git > Setup my git credential helper on Linux
+  community.general.git_config: scope=global name=credential.helper value=/usr/lib/git-core/git-credential-libsecret
+  when: ansible_os_family == 'Archlinux'

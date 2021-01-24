@@ -21,4 +21,5 @@
     - tree
     - unrar
     - wget
-    - xz    
+    - xz
+    - zsh-autosuggestions

@@ -4,11 +4,11 @@
     - "~/.bin"
     - "~/Applications"
 
-- name: base > Check fish shell is available
-  command: which fish
+- name: base > Check zsh shell is available
+  command: which zsh
   changed_when: False
 
-- name: base > Fail if user default shell is not fish
-  fail: msg="user default shell is not fish, fix it and retry"
+- name: base > Fail if user default shell is not zsh
+  fail: msg="user default shell is not zsh, fix it and retry"
   when: 
-    - (ansible_os_family != "Darwin" and ansible_facts.user_shell is not match("/.*/fish$"))
+    - (ansible_os_family != "Darwin" and ansible_facts.user_shell is not match("/.*/zsh$"))

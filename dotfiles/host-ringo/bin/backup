@@ -1,0 +1,96 @@
+#!/usr/bin/env bash
+
+REPOSITORIES_DIR="/Volumes/HDD/Backups"
+KOPIA_BIN="$HOME/.bin/kopia"
+CONF_FILE_DIR="$HOME/Library/ApplicationSupport/kopia"
+
+MYPATH="$(cd $(dirname $0); pwd)/$(basename $0)"
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+help_msg_and_exit() {
+    cat << EOF
+Usage:
+  backup snap mydocs
+  backup launchd install
+  backup launchd job
+EOF
+exit 1
+}
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+create_launchd_file() {
+    cat <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>Label</key><string>nyx.backup</string>
+        <key>Disabled</key><false/>
+        <key>ProgramArguments</key>
+        <array>
+            <string>$MYPATH</string>
+            <string>launchd</string>
+            <string>job</string>
+        </array>
+        <key>WorkingDirectory</key><string>$HOME</string>
+        <key>StartCalendarInterval</key>
+        <dict>
+            <key>Hour</key>
+            <integer>23</integer>
+            <key>Minute</key>
+            <integer>00</integer>
+        </dict>
+    </dict>
+</plist>
+EOF
+}
+
+## -- Main -- ##
+if [ ! -d "$REPOSITORIES_DIR" ]; then
+    echo "ERROR: repositories directory '$REPOSITORIES_DIR' not found" 1>&2
+    exit 1
+fi
+
+if [ ! -x "$KOPIA_BIN" ]; then
+    echo "ERROR: $KOPIA_BIN not found" 1>&2
+    exit 1
+fi
+
+PASSWORD="$(security find-generic-password -a $USER -s disaster -w)"
+case $1 in
+    snap)
+        case $2 in
+            mydocs)
+                DIR="MesDocuments"
+                CONF_FILE="$CONF_FILE_DIR/backup_mydocs.config"
+                ;;
+            *)
+                help_msg_and_exit
+                ;;
+        esac
+        KOPIA="$KOPIA_BIN --config-file='$CONF_FILE'"
+        $KOPIA repository connect filesystem --path="$REPOSITORIES_DIR/$DIR" --password=$PASSWORD
+        $KOPIA snapshot create "$HOME/$DIR"
+        $KOPIA repository disconnect
+        ;;
+    launchd)
+        LAUNCHD_FILE="${HOME}/Library/LaunchAgents/nyx.backup.plist" 
+        case $2 in
+            install)
+                launchctl unload $LAUNCHD_FILE >/dev/null 2>&1
+                create_launchd_file > $LAUNCHD_FILE
+                ls -l $LAUNCHD_FILE
+                launchctl load $LAUNCHD_FILE
+                ;;
+            job)
+                "$MYPATH" snap mydocs
+                ;;
+            *)
+                help_msg_and_exit
+                ;;
+        esac
+        ;;
+    *)
+        help_msg_and_exit
+        ;;
+esac

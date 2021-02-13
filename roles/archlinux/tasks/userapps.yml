@@ -1,4 +1,4 @@
-- name: myfavorites > Install my favorites softwares
+- name: userapps > Install my favorites softwares
   community.general.pacman: name={{ item }}
   with_items:
     - anki
@@ -7,7 +7,6 @@
     - geary
     - gnucash
     - imagemagick
-    - kate
     - keepassxc
     - ncmpcpp
     - okular
@@ -15,5 +14,12 @@
     - pycharm-community-edition
     - quodlibet
     - rawtherapee
+    - scite
     - vscode
     - vlc
+
+- name: userapps > Install fonts
+  community.general.pacman: name={{ item }}
+  with_items:
+    - adobe-source-han-sans-jp-fonts
+    - adobe-source-han-serif-jp-fonts

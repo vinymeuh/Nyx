@@ -22,6 +22,7 @@ git clone https://github.com/vinymeuh/Nyx.git $HOME/Nyx
 cd $HOME/Nyx
 pyenv activate nyx
 pip install -r requirements.txt
+ansible-galaxy install -r requirements.yml
 ```
 
 3. On macOS, install [Homebrew](https://docs.brew.sh/Installation).

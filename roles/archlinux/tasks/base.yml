@@ -5,7 +5,6 @@
     - base-devel
     - curl
     - exfat-utils
-    - fish
     - fzf
     - git
     - lm_sensors

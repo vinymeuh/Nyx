@@ -19,7 +19,7 @@
     - smbclient
     - tree
     - unrar,unzip,xz
-    - zsh
+    - zsh,zsh-autosuggestions
 
 - name: base > Enable locale
   ansible.builtin.lineinfile:

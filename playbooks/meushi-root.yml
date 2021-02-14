@@ -5,7 +5,6 @@
   tasks:
     - import_role: name=archlinux tasks_from=kernel
     - import_role: name=archlinux tasks_from=base
-    - import_role: name=archlinux tasks_from=base-aur
     - import_role: name=archlinux tasks_from=network
     - import_role: name=archlinux tasks_from=audio
     - import_role: name=archlinux tasks_from=gnome

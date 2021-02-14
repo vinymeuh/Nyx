@@ -10,6 +10,10 @@
     create: yes
 
 - name: base-aur > Install AURs packages
-  aur: name={{ item }} use=makepkg state=present
-  with_items:
-    - rcm
+  aur: name={{ packages | join(',') }} use=makepkg state=present
+  become: yes
+  become_user: aur_builder
+  vars:
+    packages:
+      - rcm
+      - timeshift,timeshift-autosnap

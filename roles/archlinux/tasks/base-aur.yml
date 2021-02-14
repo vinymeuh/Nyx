@@ -15,5 +15,6 @@
   become_user: aur_builder
   vars:
     packages:
+      - inxi
       - rcm
       - timeshift,timeshift-autosnap

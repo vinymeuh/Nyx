@@ -1,4 +1,4 @@
-- name: userapps > Install my favorites softwares
+- name: userapps > Install my favorites apps
   community.general.pacman: name={{ packages | join(',') }}
   vars:
     packages:
@@ -18,6 +18,14 @@
       - scite
       - vscode
       - vlc
+
+- name: userapps > Install my favorites apps from AUR
+  aur: name={{ packages | join(',') }} use=makepkg state=present
+  become: yes
+  become_user: aur_builder
+  vars:
+    packages:
+      - portfolio-performance-bin
 
 - name: userapps > Install fonts
   community.general.pacman: name={{ packages | join(',') }}

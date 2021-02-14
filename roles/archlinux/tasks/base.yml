@@ -1,25 +1,26 @@
 - name: base > Install base tools
-  community.general.pacman: name={{ item }}
-  with_items:
-    - acpi
-    - base-devel
-    - curl
-    - exfat-utils
-    - fzf
-    - git
-    - lm_sensors
-    - lshw
-    - nmap
-    - man-db,man-pages
-    - openssh
-    - pacman-contrib
-    - python,python-psutil
-    - rsync
-    - screen
-    - smbclient
-    - tree
-    - unrar,unzip,xz
-    - zsh,zsh-autosuggestions
+  community.general.pacman: name={{ packages | join(',') }}
+  vars:
+    packages:
+      - acpi
+      - base-devel
+      - curl
+      - exfat-utils
+      - fzf
+      - git
+      - lm_sensors
+      - lshw
+      - nmap
+      - man-db,man-pages
+      - openssh
+      - pacman-contrib
+      - python,python-psutil
+      - rsync
+      - screen
+      - smbclient
+      - tree
+      - unrar,unzip,xz
+      - zsh,zsh-autosuggestions
 
 - name: base > Enable locale
   ansible.builtin.lineinfile:

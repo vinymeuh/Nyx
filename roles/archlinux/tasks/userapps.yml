@@ -1,26 +1,28 @@
 - name: userapps > Install my favorites softwares
-  community.general.pacman: name={{ item }}
-  with_items:
-    - anki
-    - chromium
-    - exiv2
-    - geary
-    - gnucash
-    - imagemagick
-    - keepassxc
-    - ncmpcpp
-    - okular
-    - perl-image-exiftool
-    - pycharm-community-edition
-    - quodlibet
-    - rawtherapee
-    - scite
-    - vscode
-    - vlc
+  community.general.pacman: name={{ packages | join(',') }}
+  vars:
+    packages:
+      - anki
+      - chromium
+      - exiv2
+      - geary
+      - gnucash
+      - imagemagick
+      - keepassxc
+      - ncmpcpp
+      - okular
+      - perl-image-exiftool
+      - pycharm-community-edition
+      - quodlibet
+      - rawtherapee
+      - scite
+      - vscode
+      - vlc
 
 - name: userapps > Install fonts
-  community.general.pacman: name={{ item }}
-  with_items:
-    - adobe-source-han-sans-jp-fonts
-    - adobe-source-han-serif-jp-fonts
-    - noto-fonts,noto-fonts-cjk,noto-fonts-emoji
+  community.general.pacman: name={{ packages | join(',') }}
+  vars:
+    packages:
+      - adobe-source-han-sans-jp-fonts
+      - adobe-source-han-serif-jp-fonts
+      - noto-fonts,noto-fonts-cjk,noto-fonts-emoji

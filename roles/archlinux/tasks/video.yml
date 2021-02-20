@@ -1,0 +1,6 @@
+- name: video > Install base packages
+  community.general.pacman: name={{ packages | join(',') }}
+  vars:
+    packages:
+      - mesa-demos
+      - xorg-xdpyinfo

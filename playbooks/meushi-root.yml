@@ -7,5 +7,6 @@
     - import_role: name=archlinux tasks_from=base
     - import_role: name=archlinux tasks_from=network
     - import_role: name=archlinux tasks_from=audio
+    - import_role: name=archlinux tasks_from=video
     - import_role: name=archlinux tasks_from=gnome
     - import_role: name=archlinux tasks_from=userapps

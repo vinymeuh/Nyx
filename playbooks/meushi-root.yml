@@ -1,6 +1,8 @@
 ---
 - hosts: meushi
   become: yes
+  become_user: root
+  become_method: sudo
 
   tasks:
     - import_role: name=archlinux tasks_from=kernel

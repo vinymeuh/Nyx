@@ -10,6 +10,9 @@
     line: 'hosts: files mdns4_minimal [NOTFOUND=return] mymachines\1'
     backrefs: yes
 
+- name: network > Network configuration using DHCP
+  ansible.builtin.copy: src=dhcp.network dest=/etc/systemd/network/dhcp.network
+
 - name: network > Enable network services
   ansible.builtin.systemd: name={{ item }} enabled=yes state=started
   with_items:

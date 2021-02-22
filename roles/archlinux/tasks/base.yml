@@ -42,7 +42,7 @@
 - name: base > Set console keymap
   ansible.builtin.lineinfile: dest=/etc/vconsole.conf line="KEYMAP=fr" create=yes
 
-- name: x-base > Ensure /etc/X11/xorg.conf.d exists
+- name: base > Ensure /etc/X11/xorg.conf.d exists
   ansible.builtin.file: path=/etc/X11/xorg.conf.d state=directory
 
 - name: base > Set X keyboard

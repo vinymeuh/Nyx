@@ -9,27 +9,30 @@ ansible-playbook playbooks/<hostname>-root.yml -K
 ansible-playbook playbooks/<hostname>-user.yml
 ```
 
-After the inital rcm setup done by the task [rcm](roles/usersetup/tasks/rcm.yml) from **usersetup** role, configuration files can be managed directly in the repository.
+After the inital rcm setup done by the task [rcm](roles/usersetup/tasks/rcm.yml) from **usersetup** role, configuration files can be managed directly in the repository. If necessary rcm can be manually used with
 
-If necessary, rcm can be manually used with ```rcup -f -v```
+```shell
+rcup -f -v
+```
 
 ## Install
 
 1. Prepare Operating System
 
-* for **meushi**, install [Archlinux]()
+* for **meushi**, install [Archlinux](https://github.com/vinymeuh/Nyx/blob/master/notes/meushi-install-archlinux.md)
 * for **ringo**, install [Homebrew](https://docs.brew.sh/Installation)
 
 2. Install **pyenv** using [pyenv installer](https://github.com/pyenv/pyenv-installer)
 
-List Python avaibable versions for install with ```pyenv install --list```.
+3. Install Python
 
 ```shell
+pyenv install --list
 pyenv install x.x.x
 pyenv virtualenv x.x.x nyx
 ```
 
-3. Bootstrap Nyx
+4. Bootstrap Nyx
 
 ```shell
 git clone https://github.com/vinymeuh/Nyx.git $HOME/Nyx

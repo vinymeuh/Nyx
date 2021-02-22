@@ -9,13 +9,13 @@ Reference: https://wiki.archlinux.org/index.php/Installation_guide
 
 ## Basic install
 
-Boot on a USB key with Arch Linux ISO (not netinstall)
+* Boot on a USB key with Arch Linux ISO (not netinstall)
 
 ```loadkeys fr```
 
-Create disk layout
+* Create disk layout
 
-Create filesystems
+* Create filesystems
 
 ```
 mkfs.fat -F32 /dev/sda1
@@ -24,26 +24,25 @@ mkfs.ext4 /dev/sda3
 mkfs.ext4 /dev/sda4
 ```
 
+* Bootstrap ArchLinux
+
 ```
 mount /dev/sda2 /mnt
 mkdir -p /mnt/boot/EFI
 mount /dev/sda1 /mnt/boot/EFI
-```
-
-```
-pacstrap /mnt base linux linux-firmware
+pacstrap /mnt base linux linux-firmware vim
 genfstab -U /mnt > /mnt/etc/fstab
 arch-chroot /mnt
 ```
+
+* Set time zone
 
 ```
 ln -sf /usr/share/zoneinfo/Europe/Paris /etc/localtime
 hwclock --systohc
 ```
 
-```
-pacman -Sy vim
-```
+* Generate locale
 
 In **/etc/locale.gen**, uncomment:
 
@@ -56,11 +55,15 @@ fr_FR.UTF-8
 locale-gen
 ```
 
+* Set the keyboard layout  
+
 Create **/etc/vconsole.conf**
 
 ```
 KEYMAP=fr
 ```
+
+* Set hostname
 
 Create **/etc/hostname**
 
@@ -76,9 +79,13 @@ Edit **/etc/hosts**
 127.0.1.1	meushi.localdomain	meushi
 ```
 
+* Set root password
+
 ```
 passwd
 ```
+
+* Setup Grub with AMD microcode
 
 ```
 pacman -S grub efibootmgr dosfstools mtools amd-ucode
@@ -86,12 +93,14 @@ grub-install --target=x86_64-efi --bootloader-id=GRUB --recheck
 grub-mkconfig -o /boot/grub/grub.cfg
 ```
 
+* Reboot
+
 ```
 exit
 reboot
 ```
 
-Login as **root**.
+* Login as **root** and setup network
 
 Create **/etc/systemd/network/dhcp.network**
 

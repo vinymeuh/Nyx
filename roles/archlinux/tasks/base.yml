@@ -22,6 +22,7 @@
       - smbclient
       - tree
       - unrar,unzip,xz
+      - usbutils
       - zsh,zsh-autosuggestions
 
 - name: base > Enable locale

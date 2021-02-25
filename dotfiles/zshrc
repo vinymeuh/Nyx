@@ -4,8 +4,8 @@ export LC_MESSAGES=en_US.UTF-8
 
 export PROMPT="%F{220}%n@%m %1~ %#%f "
 
-export EDITOR=vi
-export GIT_EDITOR=vi
+export EDITOR=vim
+export GIT_EDITOR=vim
 export PAGER=less
 
 # PATH

@@ -1,0 +1,66 @@
+#!/usr/bin/env bash
+#
+# Backup KeePass file locally and in Google Drive for mobile devices
+# 
+#KEEPASS_DIRECTORY="${HOME}/MesDocuments/var/keepass"
+KEEPASS_DIRECTORY=/tmp
+#KEEPASS_FILE="mespasswords.kdbx"
+KEEPASS_FILE="mespasswords.kdbx.bidon"
+
+GOOGLE_ACCOUNT=$(cat $HOME/.google_account 2>/dev/null)
+GDRIVE_DIR="TEST"
+
+MYPATH="$(cd $(dirname $0); pwd)/$(basename $0)"
+
+help_msg() {
+    cat << EOF
+Usage: $(basename $0) install|start
+EOF
+}
+
+## Main ##
+
+# we need to force XDG_RUNTIME_DIR for incrond (notify-send & gio)
+export XDG_RUNTIME_DIR="/run/user/$(id -u)"
+
+case $1 in
+    install)
+        tempfile="/tmp/incrontab.$$"
+        incrontab -l | grep -v keecopy > "${tempfile}"
+        echo "${KEEPASS_DIRECTORY}/${KEEPASS_FILE}  IN_CLOSE_WRITE $MYPATH start >>${KEEPASS_DIRECTORY}/keecopy.log 2>&1" >> "${tempfile}"
+        incrontab "${tempfile}"
+        incrontab -l
+        incrontab -d
+        ;;
+    start)
+        if [ ! -f "${KEEPASS_DIRECTORY}/${KEEPASS_FILE}" ]; then
+            /usr/bin/notify-send 'keecopy' "'${KEEPASS_DIRECTORY}/${KEEPASS_FILE}' does not exists" --icon=dialog-error
+            exit 1
+        fi
+        if [ -z ${GOOGLE_ACCOUNT} ]; then
+            /usr/bin/notify-send 'keecopy' "'$HOME/.google_account' does not exists" --icon=dialog-error
+            exit 1
+        fi
+
+        echo "Create local backup of the file"
+        cp "${KEEPASS_DIRECTORY}/${KEEPASS_FILE}" "${KEEPASS_DIRECTORY}/${KEEPASS_FILE}.$(date +%Y%m%d_%H%M%S)"
+        if [ $? -ne 0 ]; then
+            /usr/bin/notify-send 'keecopy' 'Problem with local copy of keepass file' --icon=dialog-error
+        fi
+
+        echo "Purge local backups older than 60 days"
+        find "${KEEPASS_DIRECTORY}" -ctime +60 -name "${KEEPASS_FILE}.2*" -exec rm {} \;
+        if [ $? -ne 0 ]; then
+            /usr/bin/notify-send 'keecopy' 'Problem with purge older backups' --icon=dialog-error
+        fi
+
+        echo "Copy file in Gooogle Drive"
+        gio mount "google-drive://${GOOGLE_ACCOUNT}"
+        gio copy "${KEEPASS_DIRECTORY}/${KEEPASS_FILE}" "google-drive://${GOOGLE_ACCOUNT}/${GDRIVE_DIR}/${KEEPASS_FILE}"      
+        if [ $? -ne 0 ]; then
+            /usr/bin/notify-send 'keecopy' 'Problem with cloud copy of keepass file' --icon=dialog-error
+            exit 1
+        fi
+        ;;
+    *) help_msg && exit 1;;
+esac

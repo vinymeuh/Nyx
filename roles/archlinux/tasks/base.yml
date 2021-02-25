@@ -5,9 +5,11 @@
       - acpi
       - base-devel
       - curl
+      - dmidecode
       - exfat-utils
       - fzf
       - git
+      - incron
       - lm_sensors
       - lshw
       - nmap
@@ -47,5 +49,8 @@
 
 - name: base > Set X keyboard
   ansible.builtin.copy: src=00-keyboard.conf dest=/etc/X11/xorg.conf.d/00-keyboard.conf
+
+- name: base > Enable incrond service
+  ansible.builtin.systemd: name=incrond enabled=yes state=started
 
 - import_tasks: base-aur.yml

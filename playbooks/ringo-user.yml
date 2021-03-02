@@ -1,7 +1,0 @@
-- hosts: ringo
-
-  tasks:
-    - import_role: name=macos tasks_from=homebrew
-    - import_role: name=usersetup tasks_from=base
-    - import_role: name=usersetup tasks_from=rcm
-    - import_role: name=usersetup tasks_from=git

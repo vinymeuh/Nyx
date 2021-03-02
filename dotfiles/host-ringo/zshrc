@@ -10,41 +10,35 @@ export PAGER=less
 
 # PATH
 typeset -U path
-path=('/usr/local/bin' $path)
+path=("$HOME/.bin" '/usr/local/bin' $path)
 [ -d '/usr/local/go/bin' ] && path=('/usr/local/go/bin' $path)
-if [ -x "$HOME/.pyenv/bin/pyenv" ]; then
-    export PYENV_ROOT=$HOME/.pyenv
-    path=("$PYENV_ROOT/bin" $PATH)
-    eval "$(pyenv init -)"
-fi
 [ -d "$HOME/go/bin" ] && path=("$HOME/go/bin" $path)
-[ -d "$HOME/.bin" ] && path=("$HOME/.bin" $path)
 export PATH
+
+# pyenv
+export PYENV_ROOT=$HOME/.pyenv
+path=("$PYENV_ROOT/bin" $PATH)
+eval "$(pyenv init -)"
 
 # basic aliases
 alias cp='cp -i'
 alias df='df -PH'
 alias h='history'
 alias ll='ls -lsa'
-alias ls='ls --color=auto'
+alias ls='ls -G'
 alias mv='mv -i'
 alias rm='rm -i'
 alias vi=vim
 
 # setup lazy loading for executables functions files
-fpath=($HOME/.confgi/zsh/functions $fpath)
+fpath=($HOME/.config/zsh/functions $fpath)
 for f in $HOME/.config/zsh/functions/*
 do
     [ -x $f ] && autoload -Uz $f
 done
 
-# fix macOS oddities
-if [ "$(uname)" = "Darwin" ]; then
-    export HOSTNAME=$(hostname -s)
-    alias ls='ls -G'
-fi
+# fix HOSTNAME for rcm
+export HOSTNAME=$(hostname -s)
 
 # zsh-autosuggestions plugin
-if [ -f /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then
-    source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-fi
+source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh

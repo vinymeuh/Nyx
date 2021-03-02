@@ -1,0 +1,4 @@
+- hosts: ringo
+
+  tasks:
+    - import_role: name=macos tasks_from=homebrew

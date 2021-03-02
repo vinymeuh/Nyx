@@ -168,3 +168,10 @@ Then launch **Timeshift** graphical application as normal user:
 
 * RSYNC
 * Keep 5 Daily snaphosts
+
+Check configuration with:
+
+```
+sudo timeshift --list-devices
+sudo timeshift --list-snapshots
+```

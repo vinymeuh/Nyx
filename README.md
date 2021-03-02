@@ -4,16 +4,18 @@
 
 ## How to use
 
-```shell
-ansible-playbook playbooks/<hostname>-root.yml -K
-ansible-playbook playbooks/<hostname>-user.yml
-```
-
-After the inital rcm setup done by the task [rcm](roles/usersetup/tasks/rcm.yml) from **usersetup** role, configuration files can be managed directly in the repository. If necessary rcm can be manually used with
+Computers setup and softwares installations are processed with ansible playbooks:
 
 ```shell
-rcup -f -v
+ansible-playbook playbooks/setup-meushi.yml -K
+ansible-playbook playbooks/setup-ringo.yml
 ```
+
+User environment setup is finalized by ```my-setup.sh``` script:
+
+* after the initial rcm setup done by this script, configuration files can be managed directly from the repository
+* if necessary rcm can be manually used with ```rcup -f -v```
+* see also ```my-setup.sh show-broken-symlinks``` to identify dangling symbolink link left by rcm.
 
 ## Install
 
@@ -41,3 +43,5 @@ pyenv activate nyx
 pip install -r requirements.txt
 ansible-galaxy install -r requirements.yml
 ```
+
+Then see **How to use** paragraph noting that at first the script ```my-setup.sh``` is not in PATH.

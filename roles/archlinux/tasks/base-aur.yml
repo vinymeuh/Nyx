@@ -16,5 +16,6 @@
   vars:
     packages:
       - inxi
+      #- it87-dkms-git
       - rcm
       - timeshift,timeshift-autosnap

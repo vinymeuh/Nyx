@@ -40,7 +40,6 @@
   ansible.builtin.lineinfile: dest=/etc/locale.conf line={{ item }} create=yes
   with_items:
     - 'LANG=fr_FR.UTF-8'
-    - 'LC_MESSAGES=en_US.UTF-8'
 
 - name: base > Set console keymap
   ansible.builtin.lineinfile: dest=/etc/vconsole.conf line="KEYMAP=fr" create=yes

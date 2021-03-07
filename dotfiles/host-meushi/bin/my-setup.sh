@@ -25,7 +25,8 @@ gnome_setup() {
     gsettings set org.gnome.desktop.interface clock-show-date 'false'
     gsettings set org.gnome.desktop.interface cursor-size 32
     gsettings set org.gnome.desktop.interface enable-hot-corners 'false'
-    gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
+    gsettings set org.gnome.desktop.interface locate-pointer 'true'
+    gsettings set org.gnome.desktop.wm.preferences action-double-click-titlebar 'none'
     gsettings set org.gnome.desktop.wm.preferences button-layout 'appmenu:minimize,maximize,close'
 
     gsettings set org.gnome.nautilus.icon-view default-zoom-level 'standard'
@@ -35,6 +36,14 @@ gnome_setup() {
 
     if [ $(gnome-extensions list --enabled | grep -c 'user-theme@gnome-shell-extensions.gcampax.github.com') -eq 0 ]; then
         gnome-extensions enable user-theme@gnome-shell-extensions.gcampax.github.com
+    fi
+
+    # Theme
+    gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
+    if [ -d "$HOME/.icons/My Custom Theme" ]; then
+        gsettings set org.gnome.desktop.interface icon-theme 'My Custom Theme'
+    else
+        echo "WARNING: icon theme 'My Custom Theme' not found"
     fi
 }
 

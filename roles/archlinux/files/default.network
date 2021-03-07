@@ -1,0 +1,10 @@
+[Match]
+Name=*
+
+[Network]
+DHCP=yes
+MulticastDNS=no
+LLMNR=no
+
+[DHCPv4]
+UseDomains=yes

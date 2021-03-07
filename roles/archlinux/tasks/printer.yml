@@ -1,0 +1,5 @@
+- name: printer > Install CUPS
+  community.general.pacman: name=cups,ghostscript
+
+- name: printer > Enable CUPS service
+  ansible.builtin.systemd: name=cups enabled=yes state=started

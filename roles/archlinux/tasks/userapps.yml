@@ -28,11 +28,3 @@
   vars:
     packages:
       - portfolio-performance-bin
-
-- name: userapps > Install fonts
-  community.general.pacman: name={{ packages | join(',') }}
-  vars:
-    packages:
-      - adobe-source-han-sans-jp-fonts
-      - adobe-source-han-serif-jp-fonts
-      - noto-fonts,noto-fonts-cjk,noto-fonts-emoji

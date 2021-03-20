@@ -5,7 +5,7 @@ help_msg() {
     cat << EOF
 Usages: 
     $(basename $0) ALL
-    $(basename $0) git|gnome|rcm
+    $(basename $0) git|gnome|rcm|vscode
     $(basename $0) show-broken-symlinks
 EOF
 }
@@ -56,6 +56,24 @@ show_broken_symlinks() {
     find $HOME -xtype l | grep -v .mozilla
 }
 
+vscode_setup() {
+    extensions=(
+        arcticicestudio.nord-visual-studio-code
+        DavidAnson.vscode-markdownlint
+        mhutchie.git-graph
+        golang.go
+        PKief.material-icon-theme
+        samuelcolvin.jinjahtml
+    )
+    extensions_installed=$(code --list-extensions)
+    for ext in ${extensions[@]}; do
+        installed=$(echo $extensions_installed | grep -c $ext)
+        [ $installed -eq 1 ] && continue
+        echo "Install code extension $ext"
+        code --install-extension $ext
+    done
+}
+
 ## Main ##
 case $1 in
     ALL)
@@ -64,10 +82,12 @@ case $1 in
         rcm_setup
         git_setup
         gnome_setup
+        vscode_setup
         ;;
     git) git_setup;;
     gnome) gnome_setup;;
     rcm) rcm_setup;;
     show-broken-symlinks) show_broken_symlinks;;
+    vscode) vscode_setup;;
     *) help_msg && exit 1;;
 esac

@@ -1,2 +1,0 @@
-- name: x-bspwm > bspwm desktop
-  xbps: name=bspwm,sxhkd,picom,polybar,rofi,rofi-calc,feh

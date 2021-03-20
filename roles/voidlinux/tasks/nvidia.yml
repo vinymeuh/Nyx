@@ -1,2 +1,0 @@
-- name: nvidia > Install proprietary driver
-  xbps: name=nvidia

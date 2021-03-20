@@ -3,3 +3,6 @@
 
 - name: printer > Enable CUPS service
   ansible.builtin.systemd: name=cups enabled=yes state=started
+
+- name: printer > Set default page format to A4
+  ansible.builtin.lineinfile: dest=/etc/papersize line="a4" create=yes

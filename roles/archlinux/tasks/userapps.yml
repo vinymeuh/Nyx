@@ -8,11 +8,13 @@
       - firefox
       - geary
       - gnucash
+      - gthumb
+      - hunspell,hunspell-fr
       - imagemagick
       - inkscape
+      - libreoffice-still,libreoffice-still-fr,ttf-dejavu
       - keepassxc
       - ncmpcpp
-      - okular
       - perl-image-exiftool
       - pycharm-community-edition
       - quodlibet

@@ -1,10 +1,11 @@
+# https://archlinux.org/groups/x86_64/gnome/
 - name: gnome > Install my selection from 'gnome' group
   community.general.pacman: name={{ packages | join(',') }}
   vars:
     packages:
-      - gnome-shell,gnome-shell-extensions,chrome-gnome-shell,mutter
+      - gnome-shell,gnome-shell-extensions,mutter
       - baobab
-      - epiphany
+      - eog,evince
       - file-roller 
       - gdm
       - gnome-backgrounds
@@ -30,12 +31,13 @@
       - gnome-video-effects
       - gnome-weather
       - gvfs,gvfs-afc,gvfs-goa,gvfs-google,gvfs-gphoto2,gvfs-mtp,gvfs-nfs,gvfs-smb
-      - nautilus
+      - nautilus,sushi
       - simple-scan
       - tracker,tracker-miners
       - tracker3,tracker3-miners
       - xdg-user-dirs-gtk
 
+# https://archlinux.org/groups/x86_64/gnome-usage/
 - name: gnome > Install my selection from 'gnome-extra' group
   community.general.pacman: name={{ packages | join(',') }}
   vars:
@@ -43,6 +45,7 @@
       - dconf-editor
       - ghex
       - gnome-tweaks
+      - gnome-usage
       - polari
       - sysprof
 

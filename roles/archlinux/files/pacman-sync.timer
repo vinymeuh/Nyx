@@ -1,0 +1,8 @@
+[Unit]
+Description=update pacman databases on boot
+
+[Timer]
+OnBootSec=15min
+
+[Install]
+WantedBy=timers.target

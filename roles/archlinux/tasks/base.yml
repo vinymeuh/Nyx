@@ -50,6 +50,17 @@
 - name: base > Set X keyboard
   ansible.builtin.copy: src=00-keyboard.conf dest=/etc/X11/xorg.conf.d/00-keyboard.conf
 
+- name: base > Install systemd Timers & Services
+  ansible.builtin.copy: src={{ item }} dest=/etc/systemd/system/{{ item }}
+  with_items:
+    - pacman-sync.service
+    - pacman-sync.timer
+
+- name: base > Enable systemd Timers
+  ansible.builtin.systemd: name={{ item }} enabled=yes state=started
+  with_items:
+    - pacman-sync.timer
+
 - name: base > Enable incrond service
   ansible.builtin.systemd: name=incrond enabled=yes state=started
 

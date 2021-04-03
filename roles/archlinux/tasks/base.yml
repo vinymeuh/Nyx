@@ -23,6 +23,7 @@
       - tree
       - unrar,unzip,xz
       - usbutils
+      - wget
       - zsh,zsh-autosuggestions
 
 - name: base > Enable locale

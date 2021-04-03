@@ -2,13 +2,11 @@
 #
 # Backup KeePass file locally and in Google Drive for mobile devices
 # 
-#KEEPASS_DIRECTORY="${HOME}/MesDocuments/var/keepass"
-KEEPASS_DIRECTORY=/tmp
-#KEEPASS_FILE="mespasswords.kdbx"
-KEEPASS_FILE="mespasswords.kdbx.bidon"
+KEEPASS_DIRECTORY="${HOME}/MesDocuments/var/keepass"
+KEEPASS_FILE="mespasswords.kdbx"
 
 GOOGLE_ACCOUNT=$(cat $HOME/.google_account 2>/dev/null)
-GDRIVE_DIR="TEST"
+GDRIVE_DIR="KeePass"
 
 MYPATH="$(cd $(dirname $0); pwd)/$(basename $0)"
 

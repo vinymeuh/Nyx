@@ -68,7 +68,7 @@ case $1 in
                 help_msg_and_exit
                 ;;
         esac
-        KOPIA="$KOPIA_BIN --config-file='$CONF_FILE'"
+        KOPIA="$KOPIA_BIN --config-file=$CONF_FILE"
         $KOPIA repository connect filesystem --path="$REPOSITORIES_DIR/$DIR" --password=$PASSWORD
         $KOPIA snapshot create "$HOME/$DIR"
         $KOPIA repository disconnect

@@ -40,6 +40,9 @@ gnome_setup() {
 
     # Theme
     gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
+    gsettings set org.gnome.desktop.interface document-font-name 'Cantarell 10'
+    gsettings set org.gnome.desktop.interface font-name 'Cantarell 10'
+    gsettings set org.gnome.desktop.interface monospace-font-name 'Source Code Pro 10'
     if [ -d "$HOME/.icons/My Custom Theme" ]; then
         gsettings set org.gnome.desktop.interface icon-theme 'My Custom Theme'
     else

@@ -1,0 +1,126 @@
+#!/usr/bin/env bash
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# A kopia wrapper to manage my backups to external disks and to B2
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Credentials are securely stored in Gnome Keyring
+#  ~> secret-tool store --label 'kopia' kopia password
+
+KOPIA_BIN="$HOME/.bin/kopia"
+export KOPIA_CHECK_FOR_UPDATES=false
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+PrintHelp() {
+    cat << EOF
+Usage:
+  backup fs init|setup|snap|list mydocs
+
+  backup b2 init|setup|snap|list mydocs
+EOF
+}
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Info() {
+    echo -e  "$1" 1>&2
+}
+
+Abort() {
+    echo -e "\e[31m$1" 1>&2
+    exit 1
+}
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CheckExecutable() {
+    if [ ! -x "${KOPIA_BIN}" ]; then
+        Abort "unable to execute '${KOPIA_BIN}'"
+    fi
+    local kopia_version=$(kopia --version 2>&1 | cut -d ' ' -f1)
+    Info "kopia version is ${kopia_version}"
+}
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+GetBackupDisk() {
+    if mount | grep "/run/media/${USERNAME}/Disaster-A" > /dev/null; then
+        eval "${1}='/run/media/${USERNAME}/Disaster-A'" 
+    elif mount | grep "/run/media/${USERNAME}/Disaster-B" > /dev/null; then
+        eval "${1}='/run/media/${USERNAME}/Disaster-B'" 
+    else
+        Abort "backup disk not found (Disaster-A or Disaster-B)" 1>&2
+    fi
+}
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+## -- Main -- ##
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+case "$1" in
+    fs)
+        case $2 in
+            init|setup|snap|list) ;;
+            *) PrintHelp && exit 1;;
+        esac
+        case $3 in
+            mydocs) ;;
+            *) PrintHelp && exit 1;;
+        esac
+        ;;
+    b2) Abort "TODO" && exit 1;;
+    *) PrintHelp && exit 1;;  
+esac
+
+CheckExecutable
+
+case "$3" in
+    mydocs) target="MesDocuments";;
+esac
+
+declare -x PASSWORD
+PASSWORD=$(secret-tool lookup kopia password)
+if [ -z $PASSWORD ]; then
+    Abort "unable to retrieve kopia password"
+fi
+
+if [ "$1" == "fs" ]; then
+    GetBackupDisk backup_disk
+    Info "backup disk is '${backup_disk}'"
+    backup_dir="${backup_disk}/Backups"
+
+    KOPIA="$KOPIA_BIN --config-file=$HOME/.config/kopia/backup_fs_${target}.config"
+
+    if [ "$2" == "init" ]; then
+        Info "create filesystem repository '${backup_dir}/${target}'"
+        ${KOPIA} repository create filesystem --path="${backup_dir}/${target}" --password="${PASSWORD}"
+        ${KOPIA} repository disconnect
+        exit
+    fi
+
+    if [ "$2" == "setup" ]; then
+        Info "open filesystem repository '${backup_dir}/${target}'"
+        ${KOPIA} repository connect filesystem --path="${backup_dir}/${target}" --password="${PASSWORD}"
+        ${KOPIA} policy set ${HOME}/${target} --add-ignore .DS_Store
+        ${KOPIA} policy set ${HOME}/${target} --add-ignore venv
+        ${KOPIA} policy set ${HOME}/${target} --add-ignore .git
+        ${KOPIA} policy set ${HOME}/${target} --compression=zstd
+        ${KOPIA} policy set ${HOME}/${target} --keep-annual 2
+        ${KOPIA} policy set ${HOME}/${target} --keep-monthly 12
+        ${KOPIA} policy show ${HOME}/${target}
+        ${KOPIA} repository disconnect
+        exit
+    fi
+
+    if [ "$2" == "snap" ]; then
+        Info "open filesystem repository '${backup_dir}/${target}'"
+        ${KOPIA} repository connect filesystem --path="${backup_dir}/${target}" --password="${PASSWORD}"
+        ${KOPIA} snapshot create ${HOME}/${target}
+        ${KOPIA} repository disconnect
+        exit
+    fi
+
+    if [ "$2" == "list" ]; then
+        Info "open filesystem repository '${backup_dir}/${target}'"
+        ${KOPIA} repository connect filesystem --path="${backup_dir}/${target}" --password="${PASSWORD}"
+        ${KOPIA} snapshot list
+        ${KOPIA} repository disconnect
+        exit
+    fi
+fi
+
+if [ "$1" == "b2" ]; then
+    KOPIA="$KOPIA_BIN --config-file=$HOME/.config/kopia/backup_b2_${target}.config"
+fi

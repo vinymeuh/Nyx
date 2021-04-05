@@ -20,7 +20,6 @@
       - quodlibet
       - rawtherapee
       - scite
-      - vscode
       - vlc
 
 - name: userapps > Install my favorites apps from AUR
@@ -29,4 +28,5 @@
   become_user: aur_builder
   vars:
     packages:
+      - visual-studio-code-bin
       - portfolio-performance-bin

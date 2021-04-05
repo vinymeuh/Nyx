@@ -67,6 +67,7 @@ vscode_setup() {
         golang.go
         PKief.material-icon-theme
         samuelcolvin.jinjahtml
+        ms-vscode.cpptools
     )
     extensions_installed=$(code --list-extensions)
     for ext in ${extensions[@]}; do

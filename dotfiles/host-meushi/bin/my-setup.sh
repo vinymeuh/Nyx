@@ -33,7 +33,7 @@ gnome_setup() {
     gsettings set org.gnome.nautilus.preferences default-sort-order 'type'
 
     gsettings set org.gnome.system.locale region 'fr_FR.UTF-8'
-
+ 
     if [ $(gnome-extensions list --enabled | grep -c 'user-theme@gnome-shell-extensions.gcampax.github.com') -eq 0 ]; then
         gnome-extensions enable user-theme@gnome-shell-extensions.gcampax.github.com
     fi
@@ -48,6 +48,30 @@ gnome_setup() {
     else
         echo "WARNING: icon theme 'My Custom Theme' not found"
     fi
+
+    # AppFolders
+    gsettings_setup_folder() {
+        appfolder="$1"
+        name="$2"
+        apps=$3
+        gsettings set ${appfolder} name "${name}"
+        apps_str="[$(printf "'%s.desktop'," "${apps[@]}" | sed '$s/,$//')]"
+        gsettings set ${appfolder} apps "${apps_str}"
+    }
+
+    gsettings set org.gnome.desktop.app-folders folder-children "['Utilities', 'LibreOffice']"
+
+    appfolder="org.gnome.desktop.app-folders.folder:/org/gnome/desktop/app-folders/folders/LibreOffice/"
+    declare -a apps=(
+        libreoffice-base 
+        libreoffice-calc 
+        libreoffice-draw 
+        libreoffice-impress
+        libreoffice-math
+        libreoffice-startcenter
+        libreoffice-writer
+    )
+    gsettings_setup_folder $appfolder 'LibreOffice' $apps
 }
 
 rcm_setup() {

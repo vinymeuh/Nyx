@@ -50,16 +50,37 @@ gnome_setup() {
     fi
 
     # AppFolders
+    # See ~/.local/share/applications for disabled applications
     gsettings_setup_folder() {
         appfolder="$1"
         name="$2"
         apps=$3
         gsettings set ${appfolder} name "${name}"
-        apps_str="[$(printf "'%s.desktop'," "${apps[@]}" | sed '$s/,$//')]"
-        gsettings set ${appfolder} apps "${apps_str}"
+        if [ ${#apps[@]} -gt 0 ]; then
+            apps_str="[$(printf "'%s.desktop'," "${apps[@]}" | sed '$s/,$//')]"
+            gsettings set ${appfolder} apps "${apps_str}"
+        else
+            gsettings set ${appfolder} apps "[]"
+        fi
     }
 
-    gsettings set org.gnome.desktop.app-folders folder-children "['Utilities', 'LibreOffice']"
+    gsettings set org.gnome.desktop.app-folders folder-children "['GnomeUtilities', 'LibreOffice', 'Qt', 'System']"
+
+    appfolder="org.gnome.desktop.app-folders.folder:/org/gnome/desktop/app-folders/folders/GnomeUtilities/"
+    declare -a apps=(
+        org.gnome.Calculator
+        org.gnome.Cheese
+        org.gnome.Extensions
+        org.gnome.Evince
+        org.gnome.Software
+        org.gnome.Weather
+        org.gnome.clocks
+        org.gnome.eog
+        org.gnome.tweaks
+    )
+    gsettings_setup_folder $appfolder 'Utilitaires Gnome' $apps
+    gsettings set ${appfolder} categories "['X-GNOME-Utilities']"
+
 
     appfolder="org.gnome.desktop.app-folders.folder:/org/gnome/desktop/app-folders/folders/LibreOffice/"
     declare -a apps=(
@@ -72,6 +93,26 @@ gnome_setup() {
         libreoffice-writer
     )
     gsettings_setup_folder $appfolder 'LibreOffice' $apps
+
+    appfolder="org.gnome.desktop.app-folders.folder:/org/gnome/desktop/app-folders/folders/Qt/"
+    declare -a apps=(
+        qvidcap
+        qv4l2
+    )
+    gsettings_setup_folder $appfolder 'Utilitaires Qt' $apps
+    gsettings set ${appfolder} categories "['Qt']"
+    gsettings set ${appfolder} excluded-apps "['anki.desktop']"
+
+    appfolder="org.gnome.desktop.app-folders.folder:/org/gnome/desktop/app-folders/folders/System/"
+    declare -a apps=(
+        cups
+        gnome-control-center
+        gnome-system-monitor
+        lstopo
+        org.gnome.Usage
+        timeshift-gtk
+    )
+    gsettings_setup_folder $appfolder 'Système' $apps
 }
 
 rcm_setup() {

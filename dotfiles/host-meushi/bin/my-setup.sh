@@ -133,6 +133,7 @@ vscode_setup() {
         PKief.material-icon-theme
         samuelcolvin.jinjahtml
         ms-vscode.cpptools
+        ms-vscode.cmake-tools
     )
     extensions_installed=$(code --list-extensions)
     for ext in ${extensions[@]}; do

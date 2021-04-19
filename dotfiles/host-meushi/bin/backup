@@ -12,7 +12,7 @@ export KOPIA_CHECK_FOR_UPDATES=false
 PrintHelp() {
     cat << EOF
 Usage:
-  backup fs init|setup|snap|list mydocs|myphotos
+  backup fs init|setup|snap|list mydocs|myphotos|myraws
 
   backup b2 init|setup|snap|list mydocs
 EOF
@@ -56,7 +56,7 @@ case "$1" in
             *) PrintHelp && exit 1;;
         esac
         case $3 in
-            mydocs|myphotos) ;;
+            mydocs|myphotos|myraws) ;;
             *) PrintHelp && exit 1;;
         esac
         ;;
@@ -69,6 +69,7 @@ CheckExecutable
 case "$3" in
     mydocs) target="MesDocuments";;
     myphotos) target="MesPhotos";;
+    myraws) target="MesRAWs";;
 esac
 
 declare -x PASSWORD
@@ -112,6 +113,7 @@ if [ "$1" == "fs" ]; then
         ${KOPIA} repository connect filesystem --path="${backup_dir}/${target}" --password="${PASSWORD}"
         ${KOPIA} snapshot create ${HOME}/${target}
         ${KOPIA} repository disconnect
+        mkdir -p $HOME/MesDocuments/var/backup && touch $HOME/MesDocuments/var/backup/${target}
         exit
     fi
 

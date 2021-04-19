@@ -12,7 +12,7 @@ export KOPIA_CHECK_FOR_UPDATES=false
 PrintHelp() {
     cat << EOF
 Usage:
-  backup fs init|setup|snap|list mydocs
+  backup fs init|setup|snap|list mydocs|myphotos
 
   backup b2 init|setup|snap|list mydocs
 EOF
@@ -56,7 +56,7 @@ case "$1" in
             *) PrintHelp && exit 1;;
         esac
         case $3 in
-            mydocs) ;;
+            mydocs|myphotos) ;;
             *) PrintHelp && exit 1;;
         esac
         ;;
@@ -68,6 +68,7 @@ CheckExecutable
 
 case "$3" in
     mydocs) target="MesDocuments";;
+    myphotos) target="MesPhotos";;
 esac
 
 declare -x PASSWORD
@@ -94,9 +95,11 @@ if [ "$1" == "fs" ]; then
         Info "open filesystem repository '${backup_dir}/${target}'"
         ${KOPIA} repository connect filesystem --path="${backup_dir}/${target}" --password="${PASSWORD}"
         ${KOPIA} policy set ${HOME}/${target} --add-ignore .DS_Store
-        ${KOPIA} policy set ${HOME}/${target} --add-ignore venv
-        ${KOPIA} policy set ${HOME}/${target} --add-ignore .git
-        ${KOPIA} policy set ${HOME}/${target} --compression=zstd
+        if [ "$1" == "mydocs" ]; then
+            ${KOPIA} policy set ${HOME}/${target} --add-ignore venv
+            ${KOPIA} policy set ${HOME}/${target} --add-ignore .git
+            ${KOPIA} policy set ${HOME}/${target} --compression=zstd
+        fi
         ${KOPIA} policy set ${HOME}/${target} --keep-annual 2
         ${KOPIA} policy set ${HOME}/${target} --keep-monthly 12
         ${KOPIA} policy show ${HOME}/${target}

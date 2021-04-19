@@ -16,7 +16,6 @@
       - keepassxc
       - ncmpcpp
       - perl-image-exiftool
-      - pycharm-community-edition
       - quodlibet
       - rawtherapee
       - scite
@@ -28,5 +27,4 @@
   become_user: aur_builder
   vars:
     packages:
-      - visual-studio-code-bin
       - portfolio-performance-bin

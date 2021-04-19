@@ -18,7 +18,6 @@
       - gnome-disk-utility
       - gnome-font-viewer
       - gnome-keyring
-      - gnome-logs
       - gnome-menus
       - gnome-screenshot
       - gnome-session
@@ -47,7 +46,9 @@
       - gnome-tweaks
       - gnome-usage
       - polari
-      - sysprof
+
+- name: gnome > Install IBus
+  community.general.pacman: name=ibus
 
 - name: gnome > Enable GDM
   ansible.builtin.systemd: name=gdm enabled=yes state=started

@@ -15,7 +15,10 @@
   notify: grub-mkconfig
 
 - name: kernel > Set GRUB default linux command line (remove quiet)
-  ansible.builtin.lineinfile: dest=/etc/default/grub regexp='^GRUB_CMDLINE_LINUX_DEFAULT=' line='GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3"'
+  ansible.builtin.lineinfile: 
+    dest: /etc/default/grub 
+    regexp: '^GRUB_CMDLINE_LINUX_DEFAULT=' 
+    line: 'GRUB_CMDLINE_LINUX_DEFAULT="audit=0 loglevel=3"'
   notify: grub-mkconfig
 
 - name: kernel > Make GRUB remember the last selection (1/2)

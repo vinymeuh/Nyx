@@ -5,7 +5,7 @@
   become_method: sudo
 
   tasks:
-    - {import_role: name=archlinux tasks_from=kernel, tags: ['base']}
+    - {import_role: name=archlinux tasks_from=kernel, tags: ['base', 'kernel']}
     - {import_role: name=archlinux tasks_from=base, tags: ['base']}
     - {import_role: name=archlinux tasks_from=network, tags: ['network']}
     - {import_role: name=archlinux tasks_from=audio, tags: ['audio']}

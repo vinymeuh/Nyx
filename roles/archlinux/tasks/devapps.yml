@@ -3,8 +3,8 @@
   vars:
     packages:
       - cmake
+      - gdb
       - pycharm-community-edition
-      - qtcreator
 
 - name: devapps > Install dev apps & tools from AUR
   aur: name={{ packages | join(',') }} use=makepkg state=present

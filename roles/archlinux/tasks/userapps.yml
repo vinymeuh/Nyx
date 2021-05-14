@@ -21,10 +21,29 @@
       - scite
       - vlc
 
-- name: userapps > Install my favorites apps from AUR
+## Dev Tools
+- name: userpps > Install dev apps & tools packages
+  community.general.pacman: name={{ packages | join(',') }}
+  vars:
+    packages:
+      - cmake
+      - gdb
+      - pycharm-community-edition
+
+- name: userapps > Install dev apps & tools from AUR
   aur: name={{ packages | join(',') }} use=makepkg state=present
   become: yes
   become_user: aur_builder
   vars:
     packages:
-      - portfolio-performance-bin
+      - visual-studio-code-bin
+
+## ~/Applications
+- name: userapps > Create ~viny/Applications directory
+  ansible.builtin.file: path=~viny/Applications state=directory mode=0700
+
+- name: userapps > Install PortfolioPerformance dependencies
+  community.general.pacman: name=jre11-openjdk
+
+- name: userapps > Copy PortfolioPerformance desktop file
+  ansible.builtin.copy: src=desktop-files/portfolio-performance.desktop dest=~viny/.local/share/applications owner=viny group=viny mode=0755

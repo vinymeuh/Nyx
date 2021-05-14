@@ -14,4 +14,3 @@
     - {import_role: name=archlinux tasks_from=fonts, tags: ['fonts']}
     - {import_role: name=archlinux tasks_from=gnome, tags: ['gnome']}
     - {import_role: name=archlinux tasks_from=userapps, tags: ['apps']}
-    - {import_role: name=archlinux tasks_from=devapps, tags: ['devapps']}

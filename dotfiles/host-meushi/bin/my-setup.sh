@@ -38,6 +38,9 @@ gnome_setup() {
         gnome-extensions enable user-theme@gnome-shell-extensions.gcampax.github.com
     fi
 
+    # keysettings
+    gsettings set org.gnome.settings-daemon.plugins.media-keys home "['<Super>e']"
+
     # Theme
     gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
     gsettings set org.gnome.desktop.interface document-font-name 'Cantarell 10'

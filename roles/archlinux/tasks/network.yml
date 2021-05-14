@@ -3,6 +3,7 @@
   with_items:
     - avahi,nss-mdns
     - systemd-resolvconf
+    - nftables
 
 - name: network > Enable mDNS hostname resolution
   ansible.builtin.lineinfile:
@@ -24,3 +25,4 @@
     - systemd-networkd
     - systemd-resolved
     - systemd-timesyncd
+    - nftables

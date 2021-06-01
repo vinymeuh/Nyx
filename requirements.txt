@@ -1,4 +1,4 @@
 pip>=21.0
-ansible==2.10.4
+ansible==2.10.7
 ansible-lint
 yamllint

@@ -36,6 +36,7 @@
   become_user: aur_builder
   vars:
     packages:
+      - art-rawconverter
       - visual-studio-code-bin
 
 ## ~/Applications

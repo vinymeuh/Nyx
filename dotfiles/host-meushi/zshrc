@@ -28,6 +28,7 @@ alias h='history'
 alias ll='ls -lsa'
 alias ls='ls --color=auto'
 alias mv='mv -i'
+alias open='xdg-open'
 alias rm='rm -i'
 alias vi=vim
 

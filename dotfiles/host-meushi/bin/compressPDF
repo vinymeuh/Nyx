@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+in="$1"
+out="$(echo "$1" | cut -f 1 -d '.')_compressed.pdf"
+
+gs \
+    -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/screen \
+    -dNOPAUSE -dQUIET -dBATCH \
+    -sOutputFile=$out $in

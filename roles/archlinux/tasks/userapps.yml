@@ -27,6 +27,7 @@
   vars:
     packages:
       - cmake
+      - dfu-util
       - gdb
       - pycharm-community-edition
 

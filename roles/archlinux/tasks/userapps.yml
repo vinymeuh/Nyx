@@ -31,15 +31,10 @@
       - gdb
       - pycharm-community-edition
 
-- name: userapps > Install dev apps & tools from AUR
-  aur: name={{ packages | join(',') }} use=makepkg state=present
-  become: yes
-  become_user: aur_builder
-  vars:
-    packages:
-      - visual-studio-code-bin
-
 ## ~/Applications
+# - PortfolioPerformance
+# - Qt
+# - VSCode-linux-x64
 - name: userapps > Create ~viny/Applications directory
   ansible.builtin.file: path=~viny/Applications state=directory mode=0700
 
@@ -48,3 +43,6 @@
 
 - name: userapps > Copy PortfolioPerformance desktop file
   ansible.builtin.copy: src=desktop-files/portfolio-performance.desktop dest=~viny/.local/share/applications owner=viny group=viny mode=0755
+
+- name: userapps > Copy VSCode desktop file
+  ansible.builtin.copy: src=desktop-files/visual-studio-code.desktop dest=~viny/.local/share/applications owner=viny group=viny mode=0755

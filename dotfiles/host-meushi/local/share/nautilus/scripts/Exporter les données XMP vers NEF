@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+for jpegfile in ${NAUTILUS_SCRIPT_SELECTED_FILE_PATHS}
+do
+    ext="${jpegfile##*.}"    
+    [ "${ext}" != "jpg" ] && continue
+
+    fbase="${jpegfile%.*}"
+    neffile="$(echo ${fbase/MesPhotos/MesRAWs}).NEF"
+    if [ -f "${neffile}" ]; then
+        xmpfile="$(echo ${fbase/MesPhotos/MesRAWs}).xmp"
+        rm -f "${xmpfile}"
+        echo "exiftool -xmp:all -b '${jpegfile}' -o '${xmpfile}'" >> /tmp/nautilus.log
+        exiftool -xmp:all -b "${jpegfile}" -o "${xmpfile}"
+    fi  
+done

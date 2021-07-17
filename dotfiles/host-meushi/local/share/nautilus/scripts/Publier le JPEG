@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+download_dir="$(xdg-user-dir DOWNLOAD)/Export"
+mkdir -p ${download_dir}
+
+for jpegfile in ${NAUTILUS_SCRIPT_SELECTED_FILE_PATHS}
+do
+    ext="${jpegfile##*.}"    
+    [ "${ext}" != "jpg" ] && continue
+
+
+    outfile="${download_dir}/$(basename ${jpegfile})"
+    rm -f "${outfile}"
+    exiftool -all:all= "${jpegfile}" -o "${outfile}"
+    mogrify -resize 40% "${outfile}"
+done

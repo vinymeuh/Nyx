@@ -5,6 +5,7 @@
       - acpi
       - base-devel
       - curl
+      - ddcutil
       - dmidecode
       - exfat-utils
       - fzf

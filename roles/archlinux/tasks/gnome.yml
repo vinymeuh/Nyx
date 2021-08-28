@@ -6,7 +6,8 @@
       - gnome-shell,gnome-shell-extensions,mutter
       - baobab
       - eog,evince
-      - file-roller 
+      - file-roller
+      - gedit
       - gdm
       - gnome-backgrounds
       - gnome-calculator

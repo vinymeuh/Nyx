@@ -21,7 +21,7 @@ git_setup() {
     git config --global credential.helper /usr/lib/git-core/git-credential-libsecret
 }
 
-gnome_setup() {
+gnome_setup() {  # gsettings list-recursively is my bff
     gsettings set org.gnome.desktop.interface clock-show-date 'false'
     gsettings set org.gnome.desktop.interface cursor-size 32
     gsettings set org.gnome.desktop.interface enable-hot-corners 'false'
@@ -40,6 +40,9 @@ gnome_setup() {
 
     # keysettings
     gsettings set org.gnome.settings-daemon.plugins.media-keys home "['<Super>e']"
+    gsettings set org.gnome.settings-daemon.plugins.media-keys volume-up "['<Alt>Page_Up']"
+    gsettings set org.gnome.settings-daemon.plugins.media-keys volume-down ['<Alt>Page_Down']
+    gsettings set org.gnome.settings-daemon.plugins.media-keys volume-mute ['<Alt>Pause']
 
     # Theme
     gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'

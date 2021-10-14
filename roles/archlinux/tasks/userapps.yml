@@ -14,7 +14,7 @@
       - inkscape
       - libreoffice-still,libreoffice-still-fr,ttf-dejavu
       - keepassxc
-      - ncmpcpp
+      - mpc,ncmpcpp
       - perl-image-exiftool
       - quodlibet
       - rawtherapee
@@ -27,8 +27,10 @@
     packages:
       - cmake
       - dfu-util
+      - gcovr
       - gdb
       - pycharm-community-edition
+
 
 ## ~/Applications
 # - PortfolioPerformance
@@ -45,3 +47,4 @@
 
 - name: userapps > Copy VSCode desktop file
   ansible.builtin.copy: src=desktop-files/visual-studio-code.desktop dest=~viny/.local/share/applications owner=viny group=viny mode=0755
+

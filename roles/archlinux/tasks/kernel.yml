@@ -10,21 +10,29 @@
 - name: kernel > Install bootloader packages
   community.general.pacman: name=dosfstools,efibootmgr,grub,mtools,os-prober
 
-- name: kernel > Disable GRUB timeout
-  ansible.builtin.lineinfile: dest=/etc/default/grub regexp='^GRUB_TIMEOUT=' line='GRUB_TIMEOUT=-1'
+- name: kernel > Set GRUB timeout
+  ansible.builtin.lineinfile: dest=/etc/default/grub regexp='^GRUB_TIMEOUT=' line='GRUB_TIMEOUT=5'
   notify: grub-mkconfig
 
-- name: kernel > Set GRUB default linux command line (remove quiet)
+- name: kernel > Set GRUB timeout style
+  ansible.builtin.lineinfile: dest=/etc/default/grub regexp='^GRUB_TIMEOUT_STYLE=' line='GRUB_TIMEOUT_STYLE=menu'
+  notify: grub-mkconfig
+
+- name: kernel > Set GRUB default linux command line
   ansible.builtin.lineinfile: 
     dest: /etc/default/grub 
     regexp: '^GRUB_CMDLINE_LINUX_DEFAULT=' 
     line: 'GRUB_CMDLINE_LINUX_DEFAULT="audit=0 loglevel=3"'
   notify: grub-mkconfig
 
-- name: kernel > Make GRUB remember the last selection (1/2)
-  ansible.builtin.lineinfile: dest=/etc/default/grub regexp='^GRUB_DEFAULT=' line='GRUB_DEFAULT="saved"'
+- name: kernel > Disable GRUB submenu
+  ansible.builtin.lineinfile: dest=/etc/default/grub regexp='^GRUB_DISABLE_SUBMENU=' line='GRUB_DISABLE_SUBMENU=true'
   notify: grub-mkconfig
 
-- name: kernel > Make GRUB remember the last selection (2/2)
-  ansible.builtin.lineinfile: dest=/etc/default/grub regexp='^#GRUB_SAVEDEFAULT=' line='GRUB_SAVEDEFAULT="true"'
+- name: kernel > Set default GRUB menu entry
+  ansible.builtin.lineinfile: dest=/etc/default/grub regexp='^GRUB_DEFAULT=' line='GRUB_DEFAULT="Arch Linux, with Linux linux"'
+  notify: grub-mkconfig
+
+- name: kernel > Disable GRUB framebuffer (for maximum NVIDIA driver compatibility)
+  ansible.builtin.lineinfile: dest=/etc/default/grub regexp='^GRUB_TERMINAL_OUTPUT=' line='GRUB_TERMINAL_OUTPUT=console'
   notify: grub-mkconfig

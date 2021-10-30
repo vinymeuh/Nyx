@@ -31,6 +31,7 @@ User environment setup is finalized by ```my-setup.sh``` script:
 ```shell
 pyenv install --list
 pyenv install x.x.x
+pyenv versions
 pyenv virtualenv x.x.x nyx
 ```
 

@@ -66,4 +66,22 @@
 - name: base > Enable incrond service
   ansible.builtin.systemd: name=incrond enabled=yes state=started
 
-- import_tasks: base-aur.yml
+- name: base-aur > Create aur_builder user
+  user: name=aur_builder system=yes
+
+- name: base-aur > Allow passwordless sudo pacman for aur_builder
+  lineinfile:
+    path: /etc/sudoers.d/aur_builder-allow-to-sudo-pacman
+    state: present
+    line: "aur_builder ALL=(ALL) NOPASSWD: /usr/bin/pacman"
+    validate: /usr/sbin/visudo -cf %s
+    create: yes
+
+- name: base-aur > Install AURs packages
+  aur: name={{ packages | join(',') }} use=makepkg state=latest
+  become: yes
+  become_user: aur_builder
+  vars:
+    packages:
+      - rcm
+      - timeshift,timeshift-autosnap

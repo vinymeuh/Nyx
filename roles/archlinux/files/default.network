@@ -1,5 +1,5 @@
 [Match]
-Name=*
+Name=!lo
 
 [Network]
 DHCP=yes

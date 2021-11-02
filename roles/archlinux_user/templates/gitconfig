@@ -1,0 +1,7 @@
+[user]
+	name = vinymeuh
+	email = vinymeuh@gmail.com
+[credential]
+	helper = /usr/lib/git-core/git-credential-libsecret
+[init]
+	defaultBranch = main

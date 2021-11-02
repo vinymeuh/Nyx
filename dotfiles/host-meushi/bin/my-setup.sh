@@ -5,20 +5,9 @@ help_msg() {
     cat << EOF
 Usages: 
     $(basename $0) ALL
-    $(basename $0) git|gnome|rcm|vscode
+    $(basename $0) gnome|rcm|vscode
     $(basename $0) show-broken-symlinks
 EOF
-}
-
-base_setup() {
-    mkdir -p "$HOME/.bin" && chmod 700 "$HOME/.bin"
-    mkdir -p "$HOME/Applications" && chmod 700 "$HOME/Applications"
-}
-
-git_setup() {
-    git config --global user.name vinymeuh
-    git config --global user.email vinymeuh@gmail.com
-    git config --global credential.helper /usr/lib/git-core/git-credential-libsecret
 }
 
 gnome_setup() {  # gsettings list-recursively is my bff
@@ -154,13 +143,10 @@ vscode_setup() {
 case $1 in
     ALL)
         set -x
-        base_setup
         rcm_setup
-        git_setup
         gnome_setup
         vscode_setup
         ;;
-    git) git_setup;;
     gnome) gnome_setup;;
     rcm) rcm_setup;;
     show-broken-symlinks) show_broken_symlinks;;

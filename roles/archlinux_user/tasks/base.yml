@@ -1,0 +1,16 @@
+## ~/Applications
+# - PortfolioPerformance
+# - Qt
+# - VSCode-linux-x64
+- name: base > Create base directories
+  ansible.builtin.file: path={{ item }} state=directory mode=0700
+  with_items:
+    - ~/Applications
+    - ~/.bin
+    - ~/.local/share/applications
+
+- name: base > Copy ~/.gitconfig
+  ansible.builtin.template: src=gitconfig dest=~/.gitconfig mode=0600
+
+- name: base > Copy PortfolioPerformance desktop file
+  ansible.builtin.copy: src=desktop-files/portfolio-performance.desktop dest=~/.local/share/applications mode=0755

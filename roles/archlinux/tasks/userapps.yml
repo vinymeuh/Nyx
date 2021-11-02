@@ -18,10 +18,11 @@
       - perl-image-exiftool
       - quodlibet
       - rawtherapee
+      - syncthing
       - vlc
 
 ## Dev Tools
-- name: userpps > Install dev apps & tools packages
+- name: userapps > Install dev apps & tools packages
   community.general.pacman: name={{ packages | join(',') }}
   vars:
     packages:
@@ -31,20 +32,5 @@
       - gdb
       - pycharm-community-edition
 
-
-## ~/Applications
-# - PortfolioPerformance
-# - Qt
-# - VSCode-linux-x64
-- name: userapps > Create ~viny/Applications directory
-  ansible.builtin.file: path=~viny/Applications state=directory mode=0700
-
 - name: userapps > Install PortfolioPerformance dependencies
   community.general.pacman: name=jre11-openjdk
-
-- name: userapps > Copy PortfolioPerformance desktop file
-  ansible.builtin.copy: src=desktop-files/portfolio-performance.desktop dest=~viny/.local/share/applications owner=viny group=viny mode=0755
-
-- name: userapps > Copy VSCode desktop file
-  ansible.builtin.copy: src=desktop-files/visual-studio-code.desktop dest=~viny/.local/share/applications owner=viny group=viny mode=0755
-

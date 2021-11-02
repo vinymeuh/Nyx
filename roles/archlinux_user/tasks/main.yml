@@ -1,0 +1,15 @@
+## ~/Applications
+# - PortfolioPerformance
+# - Qt
+# - VSCode-linux-x64
+- name: myuser > Create ~/Applications directory
+  ansible.builtin.file: path=~/Applications state=directory mode=0700
+
+- name: myuser > Copy PortfolioPerformance desktop file
+  ansible.builtin.copy: src=desktop-files/portfolio-performance.desktop dest=~/.local/share/applications mode=0755
+
+- name: myuser > Copy VSCode desktop file
+  ansible.builtin.copy: src=desktop-files/visual-studio-code.desktop dest=~/.local/share/applications mode=0755
+
+- name: myuser > Enable syncthing service
+  ansible.builtin.systemd: name=syncthing scope=user enabled=yes state=started

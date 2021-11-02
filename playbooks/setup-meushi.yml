@@ -9,7 +9,7 @@
     - {import_role: name=archlinux tasks_from=base, tags: ['base']}
     - {import_role: name=archlinux tasks_from=network, tags: ['network']}
     - {import_role: name=archlinux tasks_from=audio, tags: ['audio']}
-    - {import_role: name=archlinux tasks_from=video, tags: ['video']}
+#    - {import_role: name=archlinux tasks_from=video, tags: ['video']}
     - {import_role: name=archlinux tasks_from=printer, tags: ['printer']}
     - {import_role: name=archlinux tasks_from=fonts, tags: ['fonts']}
     - {import_role: name=archlinux tasks_from=gnome, tags: ['gnome']}

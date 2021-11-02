@@ -1,0 +1,6 @@
+---
+- hosts: meushi
+  become: no
+
+  tasks:
+    - {import_role: name=archlinux_user tasks_from=main}

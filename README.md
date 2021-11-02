@@ -8,6 +8,7 @@ Computers setup and softwares installations are processed with ansible playbooks
 
 ```shell
 ansible-playbook playbooks/setup-meushi.yml -K
+ansible-playbook playbooks/setup-meushi-user.yml
 ansible-playbook playbooks/setup-ringo.yml
 ```
 

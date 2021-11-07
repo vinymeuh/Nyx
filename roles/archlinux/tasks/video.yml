@@ -1,6 +1,29 @@
-- name: video > Install base packages
+- name: video > Install Wayland
   community.general.pacman: name={{ packages | join(',') }}
   vars:
     packages:
-      - mesa-demos
-      - xorg-xdpyinfo
+      - wayland
+      - wayland-protocols
+      - wayland-utils
+
+- name: video > Install XWayland
+  community.general.pacman: name={{ packages | join(',') }}
+  vars:
+    packages:
+      - xorg-xwayland
+      - xorg-xlsclients
+
+- name: video > Mesa and Vulkan
+  community.general.pacman: name={{ packages | join(',') }}
+  vars:
+    packages:
+      - mesa
+      - vulkan-icd-loader
+      - vulkan-tools
+
+- name: video > Install Video Acceleration (VA) packages
+  community.general.pacman: name={{ packages | join(',') }}
+  vars:
+    packages:
+      - libva
+      - libva-utils

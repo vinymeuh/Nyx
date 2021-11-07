@@ -18,11 +18,15 @@
   ansible.builtin.lineinfile: dest=/etc/default/grub regexp='^GRUB_TIMEOUT_STYLE=' line='GRUB_TIMEOUT_STYLE=menu'
   notify: grub-mkconfig
 
-- name: kernel > Set GRUB default linux command line
+- name: kernel > Set GRUB linux command line for both normal and recovery modes
   ansible.builtin.lineinfile: 
     dest: /etc/default/grub 
-    regexp: '^GRUB_CMDLINE_LINUX_DEFAULT=' 
-    line: 'GRUB_CMDLINE_LINUX_DEFAULT="audit=0 loglevel=3"'
+    regexp: '^GRUB_CMDLINE_LINUX=' 
+    line: 'GRUB_CMDLINE_LINUX="audit=0 loglevel=3"'
+  notify: grub-mkconfig
+
+- name: kernel > Enable GRUB recovery
+  ansible.builtin.lineinfile: dest=/etc/default/grub regexp='^GRUB_DISABLE_RECOVERY=' line='GRUB_DISABLE_RECOVERY=false'
   notify: grub-mkconfig
 
 - name: kernel > Disable GRUB submenu

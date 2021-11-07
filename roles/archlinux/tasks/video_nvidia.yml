@@ -4,6 +4,7 @@
     packages:
       - nvidia-dkms
       - nvidia-utils
+      - nvidia-settings
       - nvtop
 
 - name: video > Enable Nvidia KMS only for normal modes (not for recovery)

@@ -3,3 +3,6 @@
 
 - name: grub-mkconfig
   command: grub-mkconfig -o /boot/grub/grub.cfg
+
+- name: pacman-sync
+  command: pacman -Sy

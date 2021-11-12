@@ -1,0 +1,19 @@
+- name: steam > Enable multilib for 32-bit softwares
+  ansible.builtin.blockinfile:
+    path: /etc/pacman.conf
+    block: |
+      [multilib]
+      Include = /etc/pacman.d/mirrorlist
+  notify: pacman-sync
+
+- name: steam > Install 32-bit OpenGL graphic drivers
+  community.general.pacman: name={{ packages | join(',') }}
+  vars:
+    packages:
+      - lib32-nvidia-utils
+
+- name: steam > Install lib32-systemd in order for Steam to be able to connect to its servers
+  community.general.pacman: name=lib32-systemd
+
+- name: steam > Install steam
+  community.general.pacman: name=steam

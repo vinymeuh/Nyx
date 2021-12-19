@@ -22,7 +22,7 @@
   ansible.builtin.lineinfile: 
     dest: /etc/default/grub 
     regexp: '^GRUB_CMDLINE_LINUX=' 
-    line: 'GRUB_CMDLINE_LINUX="audit=0 loglevel=3"'
+    line: 'GRUB_CMDLINE_LINUX="audit=0 loglevel=3 nowatchdog"'
   notify: grub-mkconfig
 
 - name: kernel > Enable GRUB recovery

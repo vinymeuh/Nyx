@@ -8,7 +8,6 @@
       - geary
       - gnucash
       - hunspell,hunspell-fr
-      - imagemagick
       - inkscape
       - libreoffice-still,libreoffice-still-fr,ttf-dejavu
       - keepassxc

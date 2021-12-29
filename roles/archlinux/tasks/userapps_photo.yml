@@ -3,6 +3,7 @@
   vars:
     packages:
       - exiv2
+      - imagemagick
       - perl-image-exiftool
       - rawtherapee
       - shotwell

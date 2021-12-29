@@ -1,0 +1,9 @@
+[Desktop Entry]
+Exec=/usr/bin/java -jar /home/viny/Applications/FastPhotoTagger/FastPhotoTagger.jar
+Icon=/home/viny/Applications/FastPhotoTagger/FastPhotoTagger.png
+Terminal=false
+Type=Application
+Name=FastPhotoTagger
+Comment=The fastest way to set the metadata in your photos.
+StartupNotify=true
+StartupWMClass=FastPhotoTagger

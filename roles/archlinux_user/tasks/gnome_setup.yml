@@ -1,0 +1,14 @@
+- name: Setup Gnome AppFolders
+  ansible.builtin.shell: |
+    gsettings set org.gnome.desktop.app-folders folder-children "['GnomeUtilities', 'LibreOffice', 'Photo', 'Qt', 'System']"
+
+    appfolder="org.gnome.desktop.app-folders.folder:/org/gnome/desktop/app-folders/folders/Photo/"
+    declare -a apps=(
+        ART
+        fastphototagger
+        rawtherapee
+        shotwell
+    )
+    apps_str="[$(printf "'%s.desktop'," "${apps[@]}" | sed '$s/,$//')]"
+    gsettings set ${appfolder} name 'Photographie'
+    gsettings set ${appfolder} apps "${apps_str}"

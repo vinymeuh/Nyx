@@ -1,2 +1,0 @@
-- name: syncthing > Enable syncthing service
-  ansible.builtin.systemd: name=syncthing scope=user enabled=yes state=started

@@ -1,2 +1,0 @@
-- name: vscode > Copy VSCode desktop file
-  ansible.builtin.copy: src=desktop-files/visual-studio-code.desktop dest=~/.local/share/applications mode=0755

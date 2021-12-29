@@ -4,5 +4,4 @@
 
   tasks:
     - {import_role: name=archlinux_user tasks_from=base, tags: ['base']}
-    - {import_role: name=archlinux_user tasks_from=vscode, tags: ['vscode']}
-    - {import_role: name=archlinux_user tasks_from=syncthing, tags: ['syncthing']}
+    - {import_role: name=archlinux_user tasks_from=gnome_setup, tags: ['gnome']}

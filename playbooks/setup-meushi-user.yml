@@ -4,4 +4,5 @@
 
   tasks:
     - {import_role: name=archlinux_user tasks_from=base, tags: ['base']}
-    - {import_role: name=archlinux_user tasks_from=gnome_setup, tags: ['gnome']}
+    - {import_role: name=archlinux_user tasks_from=gnome, tags: ['gnome']}
+    - {import_role: name=archlinux_user tasks_from=nautilus, tags: ['gnome', 'nautilus']}

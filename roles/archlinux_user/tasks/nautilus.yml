@@ -1,0 +1,12 @@
+- name: Ensure Nautilus scripts directory exists
+  ansible.builtin.file: path=~/.local/share/nautilus/scripts state=directory mode=0700
+
+- name: Create Nautilus scripts subdirectories
+  ansible.builtin.file: path=~/.local/share/nautilus/scripts/{{ item }} state=directory mode=0700
+  with_items:
+    - JPEG
+
+- name: Copy Nautilus scripts
+  ansible.builtin.copy: src="nautilus-scripts/{{ item }}" dest="~/.local/share/nautilus/scripts/{{ item }}" mode=0500
+  with_items:
+    - JPEG/Exporter

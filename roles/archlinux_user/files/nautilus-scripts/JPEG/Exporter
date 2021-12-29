@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+export_dir="$(xdg-user-dir DOWNLOAD)/Export"
+[ -d "${export_dir}" ] || mkdir -p "${export_dir}"
+
+hash convert 2>/dev/null
+if [ $? -ne 0 ]; then
+    notify-send -u critical 'Nautilus script' 'Could not find "convert" (imagemagick)'
+    exit 1
+fi
+
+for arg
+do
+    infile="${arg}"
+    outfile="${export_dir}/$(basename ${infile})"
+    
+    mimetype=$(file --mime-type -b -- "$infile")
+    
+    case $mimetype in
+        "image/jpeg")
+            convert -strip -resize 40% "${infile}" "${outfile}"
+            if [ $? -ne 0 ]; then
+                notify-send -u critical 'Nautilus script' "$(basename ${infile}): problem while converting"
+            fi
+            ;;
+        *)
+            notify-send -u critical 'Nautilus script' "$(basename ${infile}): mime type not supported"
+            ;;
+    esac
+done
+
+nautilus "${export_dir}"

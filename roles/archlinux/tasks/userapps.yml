@@ -13,6 +13,7 @@
       - libreoffice-still,libreoffice-still-fr,ttf-dejavu
       - keepassxc
       - mpc,ncmpcpp
+      - pdfarranger
       - quodlibet
       - syncthing
       - vlc

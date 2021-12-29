@@ -1,0 +1,17 @@
+- name: userapps-photo > Install photo management softwares
+  community.general.pacman: name={{ packages | join(',') }}
+  vars:
+    packages:
+      - exiv2
+      - perl-image-exiftool
+      - rawtherapee
+      - shotwell
+
+# https://aur.archlinux.org/packages/art-rawconverter/
+- name: userapps-photo > Install ART from AUR
+  aur: name=art-rawconverter use=makepkg state={{ art_aur_state }}
+  become: yes
+  become_user: aur_builder
+
+- name: userapps-photo > Install FastPhotoTagger dependencies
+  community.general.pacman: name=jre11-openjdk

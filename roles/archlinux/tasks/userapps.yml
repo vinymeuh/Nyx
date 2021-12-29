@@ -1,36 +1,21 @@
-- name: userapps > Install my favorites apps
+- name: userapps > Install my base apps
   community.general.pacman: name={{ packages | join(',') }}
   vars:
     packages:
       - anki
       - chromium
-      - exiv2
       - firefox
       - geary
       - gnucash
-      - gthumb
       - hunspell,hunspell-fr
       - imagemagick
       - inkscape
       - libreoffice-still,libreoffice-still-fr,ttf-dejavu
       - keepassxc
       - mpc,ncmpcpp
-      - perl-image-exiftool
       - quodlibet
-      - rawtherapee
       - syncthing
       - vlc
-
-## Dev Tools
-- name: userapps > Install dev apps & tools packages
-  community.general.pacman: name={{ packages | join(',') }}
-  vars:
-    packages:
-      - cmake
-      - dfu-util
-      - gcovr
-      - gdb
-      - pycharm-community-edition
 
 - name: userapps > Install PortfolioPerformance dependencies
   community.general.pacman: name=jre11-openjdk

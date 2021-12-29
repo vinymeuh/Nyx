@@ -1,0 +1,9 @@
+- name: userapps-devtools > Install dev apps & tools packages
+  community.general.pacman: name={{ packages | join(',') }}
+  vars:
+    packages:
+      - cmake
+      - dfu-util
+      - gcovr
+      - gdb
+      - pycharm-community-edition

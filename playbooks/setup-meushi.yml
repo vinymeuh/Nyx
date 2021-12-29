@@ -15,4 +15,6 @@
     - {import_role: name=archlinux tasks_from=fonts, tags: ['fonts']}
     - {import_role: name=archlinux tasks_from=gnome, tags: ['gnome']}
     - {import_role: name=archlinux tasks_from=userapps, tags: ['apps']}
+    - {import_role: name=archlinux tasks_from=userapps_devtools, tags: ['apps', 'devtools']}
+    - {import_role: name=archlinux tasks_from=userapps_photo, tags: ['apps', 'photo']}
     - {import_role: name=archlinux tasks_from=steam, tags: ['steam']}

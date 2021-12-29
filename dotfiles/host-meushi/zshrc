@@ -12,7 +12,7 @@ export PAGER=less
 
 # PATH
 typeset -U path
-path=("$HOME/.bin" '/usr/local/bin' $path)
+path=("$HOME/.bin" "$HOME/.local/bin" '/usr/local/bin' $path)
 [ -d "$HOME/go/bin" ] && path=("$HOME/go/bin" $path)
 export PATH
 

@@ -34,7 +34,7 @@
   notify: grub-mkconfig
 
 - name: kernel > Set default GRUB menu entry
-  ansible.builtin.lineinfile: dest=/etc/default/grub regexp='^GRUB_DEFAULT=' line='GRUB_DEFAULT="Arch Linux, with Linux linux"'
+  ansible.builtin.lineinfile: dest=/etc/default/grub regexp='^GRUB_DEFAULT=' line='GRUB_DEFAULT="Arch Linux, with Linux linux-lts"'
   notify: grub-mkconfig
 
 - name: kernel > Disable GRUB framebuffer (for maximum NVIDIA driver compatibility)

@@ -2,10 +2,9 @@
   community.general.pacman: name={{ packages | join(',') }}
   vars:
     packages:
-      - anki
       - chromium
       - firefox
-      - geary
+      - thunderbird, thunderbird-i18n-fr 
       - gnucash
       - hunspell,hunspell-fr
       - inkscape
@@ -19,3 +18,8 @@
 
 - name: userapps > Install PortfolioPerformance dependencies
   community.general.pacman: name=jre11-openjdk
+
+- name: userapps > Install anki
+  aur: name=anki-official-binary-bundle use=makepkg state={{ anki_aur_state }}
+  become: yes
+  become_user: aur_builder
